@@ -9,8 +9,13 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         {% block stylesheets %}
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
-        <link rel="stylesheet" href="{{ asset('bundles/blog/css/normalize.css')}}">
-        <link rel="stylesheet" href="{{ asset('bundles/blog/css/main.css')}}">
+
+                {% stylesheets 
+                    'bundles/blog/css/normalize.css'
+                    'bundles/blog/css/main.css'
+                     filter='cssrewrite' %}
+                    <link rel="stylesheet" href="{{ asset_url }}" />
+                {% endstylesheets %}
         {% endblock %}
         
     </head>
@@ -151,10 +156,15 @@
             </div>
         </footer>
         {% block javascripts %}
-        <script src="{{ asset('bundles/blog/js/vendor/jquery-1.10.2.min.js')}}"></script>
-        <script src="{{ asset('bundles/blog/js/vendor/jquery.responsiSlider.js')}}"></script>
-        <script src="{{ asset('bundles/blog/js/plugins.js')}}"></script>
-        <script src="{{ asset('bundles/blog/js/main.js')}}"></script>
+            
+            {% javascripts 
+                '@BlogBundle/Resources/public/js/vendor/jquery-1.10.2.min.js'
+                '@BlogBundle/Resources/public/js/vendor/*'
+                '@BlogBundle/Resources/public/js/plugins.js' 
+                '@BlogBundle/Resources/public/js/main.js' 
+            %}
+                <script src="{{ asset_url }}"></script>
+            {% endjavascripts %}
         {% endblock %}
     </body>
 </html>
