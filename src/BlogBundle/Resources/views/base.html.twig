@@ -13,7 +13,8 @@
                 {% stylesheets 
                     'bundles/blog/css/normalize.css'
                     'bundles/blog/css/main.css'
-                     filter='cssrewrite' %}
+                     filter='cssrewrite'
+                     output = 'assets/css/compiled.css' %}
                     <link rel="stylesheet" href="{{ asset_url }}" />
                 {% endstylesheets %}
         {% endblock %}
@@ -161,7 +162,8 @@
                 '@BlogBundle/Resources/public/js/vendor/jquery-1.10.2.min.js'
                 '@BlogBundle/Resources/public/js/vendor/*'
                 '@BlogBundle/Resources/public/js/plugins.js' 
-                '@BlogBundle/Resources/public/js/main.js' 
+                '@BlogBundle/Resources/public/js/main.js'
+                output = 'assets/js/compiled.js' 
             %}
                 <script src="{{ asset_url }}"></script>
             {% endjavascripts %}
