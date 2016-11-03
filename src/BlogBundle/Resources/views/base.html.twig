@@ -13,7 +13,7 @@
                 {% stylesheets 
                     'bundles/blog/css/normalize.css'
                     'bundles/blog/css/main.css'
-                     filter='cssrewrite'
+                     filter='cssrewrite,yui_css'
                      output = 'assets/css/compiled.css' %}
                     <link rel="stylesheet" href="{{ asset_url }}" />
                 {% endstylesheets %}
