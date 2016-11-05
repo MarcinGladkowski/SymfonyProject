@@ -19,4 +19,5 @@ class Tag extends AbstractTaxonomy {
      */
     protected $posts;
   
+    
 }
