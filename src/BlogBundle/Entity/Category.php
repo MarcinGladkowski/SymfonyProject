@@ -1,6 +1,7 @@
 <?php
 
 namespace BlogBundle\Entity;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -8,11 +9,13 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="blog_categories")
  * @author Marcin
  */
-class Tag extends AbstractTaxonomy {
+class Category extends AbstractTaxonomy {
   
     /**
-     *
-     * @ORM\OneToMany(targetEntity = "Post", mappedBy = "category")
+     * @ORM\OneToMany(
+     *      targetEntity = "Post", 
+     *      mappedBy = "category"
+     * )
      */
     protected $posts;
     

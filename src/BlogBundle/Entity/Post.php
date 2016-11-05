@@ -39,16 +39,25 @@ class Post {
     private $thumbnail = null;
     
     /**
-     *
-     * @ORM\ManyToOne(targetEntity = "Category", inversedBy = "posts")
-     * @ORM\JoinColumn(name = "category_id", referenceColumnName = "Id", noDelete = "SET NULL")
+     * @ORM\ManyToOne(
+     *                 targetEntity = "Category",
+     *                 inversedBy = "posts"
+     * )
+     * 
+     * @ORM\JoinColumn(
+     *          name = "category_id", 
+     *          referencedColumnName = "id", 
+     *          onDelete = "SET NULL"
+     * )
      */
     private $category;
     
     /**
-     * @ORM/ManyToMany(targetEntity = "Tag", inversedBy = "posts")
+     * @ORM\ManyToMany(
+     *      targetEntity = "Tag", 
+     *      inversedBy = "posts"
+     * )
      * @ORM\JoinTable(name = "blog_post_tags")
-     * 
      */
     private $tags;
     
@@ -58,12 +67,12 @@ class Post {
     private $author;
     
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(name = "create_date", type="datetime")
      */
     private $createDate;
     
      /**
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(name = "published_date", type="datetime", nullable=true)
      */
     private $publishedDate = null;
     
