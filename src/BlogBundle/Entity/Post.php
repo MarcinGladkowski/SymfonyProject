@@ -38,8 +38,18 @@ class Post {
      */
     private $thumbnail = null;
     
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity = "Category", inversedBy = "posts")
+     * @ORM\JoinColumn(name = "category_id", referenceColumnName = "Id", noDelete = "SET NULL")
+     */
     private $category;
     
+    /**
+     * @ORM/ManyToMany(targetEntity = "Tag", inversedBy = "posts")
+     * @ORM\JoinTable(name = "blog_post_tags")
+     * 
+     */
     private $tags;
     
     /**

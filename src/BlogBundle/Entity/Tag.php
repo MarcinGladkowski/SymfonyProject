@@ -10,5 +10,10 @@ use Doctrine\ORM\Mapping as ORM;
  * @author Marcin
  */
 class Category extends AbstractTaxonomy {
+    
+    /**
+     * @ORM/ManyToMany(targetEntity = "Post", mappedBy = "Tags")
+     */
+    protected $posts;
   
 }

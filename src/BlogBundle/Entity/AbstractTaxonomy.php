@@ -26,7 +26,7 @@ abstract class AbstractTaxonomy {
      */
     private $slug;
     
-    private $posts;
+    protected $posts;
     
     
 }
