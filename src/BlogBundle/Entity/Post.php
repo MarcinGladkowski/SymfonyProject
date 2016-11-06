@@ -3,10 +3,13 @@
 namespace BlogBundle\Entity; 
 
 use Doctrine\ORM\Mapping as ORM;
+use BlogBundle\Libs\Utils;
+
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="blog_posts")
+ * @ORM\HasLifecycleCallbacks
  * @author Marcin
  */
 class Post {
@@ -127,7 +130,7 @@ class Post {
      */
     public function setSlug($slug)
     {
-        $this->slug = $slug;
+        $this->slug = \BlogBundle\Libs\Utils::sluggify($slug);
 
         return $this;
     }
@@ -318,5 +321,15 @@ class Post {
     public function getTags()
     {
         return $this->tags;
+    }
+    
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function preSave() {
+        if(null === $this->slug){
+            $this->setSlug($this->getTitle());
+        }
     }
 }

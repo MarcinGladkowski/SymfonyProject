@@ -3,9 +3,11 @@
 namespace BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use BlogBundle\Libs\Utils;
 
 /**
  * @ORM\MappedSuperclass
+ * @ORM\HasLifecycleCallbacks
  */
 abstract class AbstractTaxonomy {
     
@@ -113,7 +115,7 @@ abstract class AbstractTaxonomy {
      */
     public function setSlug($slug)
     {
-        $this->slug = $slug;
+        $this->slug = \BlogBundle\Libs\Utils::sluggify($slug);
 
         return $this;
     }
@@ -126,5 +128,14 @@ abstract class AbstractTaxonomy {
     public function getSlug()
     {
         return $this->slug;
+    }
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     */
+    public function preSave() {
+        if(null == $this->slug){
+            $this->setSlug($this->getName());
+        }
     }
 }

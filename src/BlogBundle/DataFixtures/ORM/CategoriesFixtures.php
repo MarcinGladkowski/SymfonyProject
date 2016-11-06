@@ -3,38 +3,36 @@
 namespace BlogBundle\DataFixTures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-use BlogBundle\Entity\Tag;
+use BlogBundle\Entity\Category;
 
-class TagsFixtures extends AbstractFixture{
+class CategoriesFixtures extends AbstractFixture implements OrderedFixtureInterface{
     public function load(ObjectManager $manager) {
        
         
-        $tagList = array(
-            'osobowe',
-            'odrzutowe',
-            'wojskowe',
-            'kosmiczne',
-            'tajne2',
-            'osobowe2',
-            'odrzutowe2',
-            'wojskowe2',
-            'kosmiczne2',
-            'tajne3',
-            'osobowe3',
-            'odrzutowe3',
-            'wojskowe3',
-            'kosmiczne3',
-            'tajne4',
+        $categoriesList = array(
+            'osobowe' => 'Samoloty osobowe i pasażerskie',
+            'odrzutowe' => 'Samoloty odrzutowe',
+            'wojskowe' => 'Samoloty wojskowe', 
+            'kosmiczne' => 'Promy kosmiczne',
+            'tajne' => 'Tajne rozwiązania'
         );
-        foreach ($tagList as $key => $name) {
-            $Tag = new Tag();
+        foreach ($categoriesList as $key => $name) {
+            $Category = new Category();
             
-            $Tag->setName($name)
-                     ->setSlug($name);
+            $Category->setName($name);
+                 
+            
+        $manager->persist($Category);
         
-        $manager->persist($Tag);
+        $this->addReference('category_'.$key, $Category);
         }
         $manager->flush();
     }
+
+    public function getOrder() {
+        return 0;
+    }
+
 }
