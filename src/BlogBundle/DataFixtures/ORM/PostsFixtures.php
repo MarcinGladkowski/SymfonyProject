@@ -29,6 +29,15 @@ class PostsFixtures extends AbstractFixture implements OrderedFixtureInterface{
                 'createDate' => '2014-01-01 12:11:12',
                 'publishedDate' => NULL,
             ),
+             array(
+                'title' => 'Jakiś tytuł3',
+                'content' => 'Jakaś treść2',
+                'category' => 'tajne',
+                'tags' => array('kosmiczne', 'tajne'),
+                'author' => 'Marcin Nowak',
+                'createDate' => '2014-01-01 12:11:12',
+                'publishedDate' => NULL,
+            ),
         );
        
         foreach ($postsList as $details) {

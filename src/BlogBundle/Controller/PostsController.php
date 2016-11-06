@@ -8,13 +8,25 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 class PostsController extends Controller {   
     
+    protected $itemsLimit = 2;
+    
     /**
      * @Route("/{page}", name = "blog_index", defaults = {"page" = 1}, requirements = {"page" = "\d+"})
      * @Template()
      */
     public function indexAction($page)
-    {
-        return array();
+    {   
+        
+        $PostRepo = $this->getDoctrine()->getRepository('BlogBundle:Post');
+        $allPosts = $PostRepo->findby(array(), array('publishedDate' => 'DESC'));
+        
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate($allPosts, $page, $this->itemsLimit);
+        
+        return array(
+            'pagination' => $pagination,
+            
+        );
     }
     
     /**

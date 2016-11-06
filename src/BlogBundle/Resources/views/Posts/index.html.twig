@@ -21,13 +21,14 @@
 
 {% block content %}
                 <div class="left-side">
+                    {% for post in pagination %}
                         <article class="post">
                             <header>
-                                <h1>Suspendisse molestie vivamus fermentum</h1>
+                                <h1>{{ post.title }}</h1>
 
                                 <div class="meta-data">
-                                    <div class="author">Autor <a href="#">macq</a></div>
-                                    <div class="create-date">Dodano 11.12.2013</div>
+                                    <div class="author">Autor <a href="#">{{ post.author }}</a></div>
+                                    <div class="create-date">Dodano {{ post.publishedDate|date('d.m.Y, H.m') }}</div>
                                 </div>
                             </header>
 
@@ -35,71 +36,42 @@
                                 <div class="meta-data"> 
                                     <div class="categories">
                                         Kategoria:
-                                        <a href="#">Samoloty</a>
+                                        <a href="#">{{ post.category.name }}</a>
                                     </div>
 
                                     <div class="tags">
                                         Tagi:
-                                        <a href="#">A380</a>
-                                        <a href="#">airbus</a>
-                                        <a href="#">odrzutowe</a> 
+                                        {% for tag in post.tags %}
+                                        <a href="#">{{ tag.name }}</a>
+                                        {% endfor %}
+                                        
                                     </div>
                                 </div>
 
                                 <img src="{{ asset('bundles/blog/img/default-thumbnail.jpg')}}" alt="">
                             </div>
                             
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, omnis asperiores maiores consequatur eligendi vitae veniam ab similique nulla ut necessitatibus error rem dolore architecto culpa magni aliquid ea! Consequuntur, harum, eum, laboriosam, sunt perspiciatis accusantium totam ea nostrum magni quia molestias odit ad repudiandae necessitatibus nemo autem vero. Quas, laudantium, ipsam, dicta, nihil amet ab veniam veritatis fugit ex repudiandae minima rerum illo! Harum nihil aliquam officia autem quam!</p>
-
+                            {{ post.content|raw }}    
+                            
                             <footer>
                                 <a class="comments" href="#">Komentarzy (31)</a>
-                                <a href="#" class="btn-green">Czytaj całość [...]</a>
+                                <a href="{{ path('blog_post', {'slug': post.slug } )}}" class="btn-green">Czytaj całość ...</a>
                             </footer>
                         </article> <!-- .post -->
+                        {% endfor %}
 
-                        <article class="post">
-                            <header>
-                                <h1>Donec sit amet eleifend purus laoreet</h1>
+                      
+                        {{ knp_pagination_render(pagination) }}
+                      
+                
 
-                                <div class="meta-data">
-                                    <div class="author">Autor <a href="#">macq</a></div>
-                                    <div class="create-date">Dodano 11.12.2013</div>
-                                </div>
-                            </header>
-
-                            <div class="thumbnail">
-                                <div class="meta-data">
-                                    <div class="categories">
-                                        Kategoria: 
-                                        <a href="#">Samoloty</a>
-                                    </div>
-
-                                    <div class="tags">
-                                        Tagi: 
-                                        <a href="#">#A380</a>
-                                        <a href="#">airbus</a>
-                                        <a href="#">odrzutowe</a>
-                                    </div>
-                                </div>
-
-                                <img src="{{ asset('bundles/blog/img/default-thumbnail.jpg')}}" alt="">
-                            </div>
-
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reiciendis, omnis asperiores maiores consequatur eligendi vitae veniam ab similique nulla ut necessitatibus error rem dolore architecto culpa magni aliquid ea! Consequuntur, harum, eum, laboriosam, sunt perspiciatis accusantium totam ea nostrum magni quia molestias odit ad repudiandae necessitatibus nemo autem vero. Quas, laudantium, ipsam, dicta, nihil amet ab veniam veritatis fugit ex repudiandae minima rerum illo! Harum nihil aliquam officia autem quam!</p>
-
-                            <footer>
-                                <a class="comments" href="#">Komentarzy (31)</a>
-                                <a href="#" class="btn-green">Czytaj całość [...]</a>
-                            </footer>
-                        </article> <!-- .post -->
-                        
-                        <div class="pagination">
+                       {# <div class="pagination">
                             <ul>
                                 <li><a href="#">1</a></li>
                                 <li><a href="#">2</a></li>
                                 <li><a class="current" href="#">3</a></li>
                                 <li><a href="#">4</a></li>
                             </ul>
-                        </div> <!-- .pagination -->
-                    </div> <!-- .left-side -->
+                        </div> <!-- .pagination -->#}
+                    </div> {#<!-- .left-side -- >#}
 {% endblock %}
