@@ -7,7 +7,7 @@ use BlogBundle\Libs\Utils;
 
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="BlogBundle\Repository\PostRepository")
  * @ORM\Table(name="blog_posts")
  * @ORM\HasLifecycleCallbacks
  * @author Marcin

@@ -31,14 +31,12 @@
                                     <div class="create-date">Dodano {{ post.publishedDate|date('d.m.Y, H.m') }}</div>
                                 </div>
                             </header>
-
                             <div class="thumbnail">
                                 <div class="meta-data"> 
                                     <div class="categories">
                                         Kategoria:
                                         <a href="#">{{ post.category.name }}</a>
                                     </div>
-
                                     <div class="tags">
                                         Tagi:
                                         {% for tag in post.tags %}
@@ -47,23 +45,17 @@
                                         
                                     </div>
                                 </div>
-
                                 <img src="{{ asset('bundles/blog/img/default-thumbnail.jpg')}}" alt="">
                             </div>
-                            
-                            {{ post.content|raw }}    
-                            
+                            {{ post.content|raw }}                    
                             <footer>
                                 <a class="comments" href="#">Komentarzy (31)</a>
                                 <a href="{{ path('blog_post', {'slug': post.slug } )}}" class="btn-green">Czytaj całość ...</a>
                             </footer>
                         </article> <!-- .post -->
                         {% endfor %}
-
-                      
+ 
                         {{ knp_pagination_render(pagination) }}
-                      
-                
 
                        {# <div class="pagination">
                             <ul>

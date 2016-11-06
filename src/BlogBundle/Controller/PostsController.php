@@ -18,10 +18,16 @@ class PostsController extends Controller {
     {   
         
         $PostRepo = $this->getDoctrine()->getRepository('BlogBundle:Post');
-        $allPosts = $PostRepo->findby(array(), array('publishedDate' => 'DESC'));
+//        $allPosts = $PostRepo->findby(array(), array('publishedDate' => 'DESC'));
+        
+        $qb = $PostRepo->getQueryBuilder(array(
+            'status' => 'published',
+            'orderBy' => 'p.publishedDate',
+            'orderDir' => 'DESC',
+        ));
         
         $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate($allPosts, $page, $this->itemsLimit);
+        $pagination = $paginator->paginate($qb, $page, $this->itemsLimit);
         
         return array(
             'pagination' => $pagination,
