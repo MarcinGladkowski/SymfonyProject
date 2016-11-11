@@ -6,6 +6,17 @@ use Doctrine\ORM\EntityRepository;
 
 class PostRepository extends EntityRepository {
     
+    public function getPublishedPost($slug){
+        $qb = $this->getQueryBuilder(array(
+            'status' => 'published'
+        ));
+        
+        $qb->andWhere('p.slug = :slug')
+                ->setParameter('slug', $slug);
+        return $qb->getQuery()->getOneOrNullResult();
+    }
+    
+    
     public function getQueryBuilder(array $params = array()){
         
         $qb = $this->createQueryBuilder('p')
@@ -38,6 +49,11 @@ class PostRepository extends EntityRepository {
                ->setParameter('tagSlug', $params['tagSlug']);
         }
         
+        if(!empty($params['search'])){
+            $searchParam = '%'.$params['search']. '%';
+            $qb->andWhere('p.title LIKE :searchParam OR p.content LIKE :searchParam')
+                    ->setParameter('searchParam', $searchParam);
+        }
         
         return $qb;
         

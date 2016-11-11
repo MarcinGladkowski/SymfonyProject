@@ -78,8 +78,8 @@
                     <h2 class="left-side">{% spaceless %}{% block contentTitle %}{% endblock %}{% endspaceless %}</h2>
                     
                     {% if hideSearch is not defined %}
-                    <form class="right-side" action="#">
-                        <input type="text" name="search" placeholder="Wyszukaj">
+                    <form class="right-side" action="{{ path('blog_search') }}">
+                        <input type="text" value="{{ searchParam is defined ? searchParam : '' }}" name="search" placeholder="Wyszukaj">
                     </form>
                     {% endif %}
                 </div>

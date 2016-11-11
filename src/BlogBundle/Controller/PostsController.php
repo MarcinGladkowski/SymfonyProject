@@ -5,6 +5,7 @@ namespace BlogBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class PostsController extends Controller {   
     
@@ -32,12 +33,49 @@ class PostsController extends Controller {
     }
     
     /**
+     * @Route("/search/{page}", 
+     * name = "blog_search", 
+     * defaults = {"page" = 1}, 
+     * requirements = {"page" = "\d+"})
+     * 
+     * @Template("BlogBundle:Posts:postsList.html.twig")
+     */
+    public function searchAction(Request $Request, $page)
+    {   
+        
+       $searchParam = $Request->query->get('search');
+        
+       $pagination = $this->getPaginatedPosts(array(
+            'status' => 'published',
+            'orderBy' => 'p.publishedDate',
+            'orderDir' => 'DESC',
+           'search' => $searchParam
+        ), $page);
+        
+        return array(
+            'pagination' => $pagination,
+            'listTitle' => sprintf('Wyniki wyszukiwania frazy "%s"', $searchParam),
+            'searchParam' => $searchParam
+        );
+    }
+    
+    /**
      * @Route("/{slug}", name = "blog_post")
      * @Template()
      */
     public function postAction($slug)
-    {
-        return array();
+    {   
+        $PostRepo = $this->getDoctrine()->getRepository('BlogBundle:Post');
+        
+        $Post = $PostRepo->getPublishedPost($slug);
+        
+        if(null === $Post){
+            throw $this->createNotFoundException('Post nie został odnaleziony');
+        }
+         
+        return array(
+            'post' => $Post
+        );
     }
     
      /**

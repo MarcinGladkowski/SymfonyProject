@@ -1,19 +1,19 @@
 {% extends "BlogBundle::base.html.twig" %}
 
-{% block pagetitle %}Tytuł postu{% endblock %}
+{% block pagetitle %}{{ post.title }}{% endblock %}
 
 
-{% block contentTitle %}Tytuł postu{% endblock %}
+{% block contentTitle %}{{ post.title }}{% endblock %}
 
 {% block content %}
   <div class="left-side">
                         <article class="post">
                             <header>
-                                <h1>Suspendisse molestie vivamus fermentum</h1>
+                                <h1>{{ post.title }}</h1>
 
                                 <div class="meta-data">
-                                    <div class="author">Autor <a href="#">macq</a></div>
-                                    <div class="create-date">Dodano 11.12.2013</div>
+                                    <div class="author">Autor <a href="#">{{ post.author }}</a></div>
+                                    <div class="create-date">{{ post.publishedDate|date('d.m.Y, H.m') }}</div>
                                 </div>
                             </header>
 
@@ -21,22 +21,20 @@
                                 <div class="meta-data">
                                     <div class="categories">
                                         Kategoria: 
-                                        <a href="#">Samoloty</a>
+                                        <a href="#">{{ post.category.name }}</a>
                                     </div>
 
                                     <div class="tags">
                                         Tagi: 
-                                        <a href="#">A380</a>
-                                        <a href="#">airbus</a>
-                                        <a href="#">odrzutowe</a>
+                                        {% for tag in post %}
+                                            <a href="#">{{ tag.name }}</a>
+                                        {% endfor %}
                                     </div>
                                 </div>
 
                                 <img src="img/default-thumbnail.jpg" alt="">
                             </div>
-
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eaque, et, quasi, sit omnis atque veniam aut illum quibusdam quaerat earum ipsam ipsum rem adipisci? Odio, deserunt, officiis, iure optio rem libero soluta impedit dolorum laboriosam fugit laborum consequuntur quo minus repellendus adipisci aut quas rerum aliquam culpa consectetur animi ea reiciendis nihil nemo ipsam. Non, illum magni culpa nam quis placeat a assumenda similique. Sed, quasi, nisi, officiis animi impedit pariatur cupiditate quos quae laborum sint possimus ab consequatur magni veniam suscipit nesciunt et hic mollitia debitis exercitationem quidem dignissimos nemo harum cumque itaque! Quisquam natus minima voluptates facilis adipisci!</p>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat, placeat, ipsum magni explicabo minima numquam. Praesentium, maiores, nisi temporibus quis id velit sequi? Quasi, veniam, culpa, quidem debitis maxime impedit minima eius explicabo officiis illum enim vel quibusdam a porro beatae quaerat iure accusantium quod nostrum rem nesciunt alias ipsum aut blanditiis in error nihil amet vitae pariatur optio ex eveniet tempore tenetur. Pariatur, unde optio quas eum nostrum atque eos eius eveniet commodi aliquid sit odit ex tempore velit magni excepturi voluptatem dolorem adipisci placeat officiis dolorum consequuntur suscipit iste quaerat non officia sint numquam quos cum vero neque.</p>
+                                    {{ post.content|raw }}
                         </article>
 
                         <div class="notification block">
