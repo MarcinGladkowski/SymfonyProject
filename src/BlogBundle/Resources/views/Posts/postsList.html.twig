@@ -1,6 +1,6 @@
 {% extends "BlogBundle::base.html.twig" %}
 
-{% block pagetitle %}Najnowsze wpisy{% endblock %}
+{% block pagetitle %}{{ listTitle }}{% endblock %}
 
 {% block topImage %}
               <div class="slider">
@@ -17,7 +17,7 @@
             </div>
 {% endblock %}
 
-{% block contentTitle %}Najnowsze wpisy{% endblock %}
+{% block contentTitle %}{{ listTitle }}{% endblock %}
 
 {% block content %}
                 <div class="left-side">

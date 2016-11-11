@@ -28,6 +28,17 @@ class PostRepository extends EntityRepository {
             $qb->orderBy($params['orderBy'], $orderDir);
         }
         
+        if(!empty($params['categorySlug'])){
+            $qb->andWhere('c.slug = :categorySlug')
+               ->setParameter('categorySlug', $params['categorySlug']);
+        }
+        
+        if(!empty($params['tagSlug'])){
+            $qb->andWhere('t.slug = :tagSlug')
+               ->setParameter('tagSlug', $params['tagSlug']);
+        }
+        
+        
         return $qb;
         
     }

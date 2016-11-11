@@ -12,25 +12,21 @@ class PostsController extends Controller {
     
     /**
      * @Route("/{page}", name = "blog_index", defaults = {"page" = 1}, requirements = {"page" = "\d+"})
-     * @Template()
+     * @Template("BlogBundle:Posts:postsList.html.twig")
      */
     public function indexAction($page)
     {   
         
-        $PostRepo = $this->getDoctrine()->getRepository('BlogBundle:Post');
-//        $allPosts = $PostRepo->findby(array(), array('publishedDate' => 'DESC'));
-        
-        $qb = $PostRepo->getQueryBuilder(array(
+       $pagination = $this->getPaginatedPosts(array(
             'status' => 'published',
             'orderBy' => 'p.publishedDate',
-            'orderDir' => 'DESC',
-        ));
-        
-        $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate($qb, $page, $this->itemsLimit);
+            'orderDir' => 'DESC'
+        ), $page);
         
         return array(
             'pagination' => $pagination,
+            'listTitle' => 'Najnowsze wpisy'
+            
             
         );
     }
@@ -45,20 +41,63 @@ class PostsController extends Controller {
     }
     
      /**
-     * @Route("/category/{slug}/{page}", name = "blog_category", defaults = {"page" = 1}, requirements = {"page" = "\d+"})
-     * @Template()
+     * @Route("/category/{slug}/{page}", 
+     * name = "blog_category", 
+     * defaults = {"page" = 1}, 
+     * requirements = {"page" = "\d+"})
+     * @Template("BlogBundle:Posts:postsList.html.twig")
      */
-    public function categoryAction($slug)
+    public function categoryAction($slug, $page)
     {
-        return array();
+        $pagination = $this->getPaginatedPosts(array(
+            'status' => 'published',
+            'orderBy' => 'p.publishedDate',
+            'orderDir' => 'DESC',
+            'categorySlug' => $slug
+        ), $page);
+
+        $CategoryRepo = $this->getDoctrine()->getRepository('BlogBundle:Category');
+        $Category = $CategoryRepo->findOneBySlug($slug);
+        
+        
+        
+        return array(
+            'pagination' => $pagination,
+            'listTitle' => sprintf('Wpisy w kategorii "%s"', $Category->getName())
+        );
     }
     
      /**
      * @Route("/tag/{slug}/{page}", name = "blog_tag", defaults = {"page" = 1}, requirements = {"page" = "\d+"})
-     * @Template()
+     * @Template("BlogBundle:Posts:postsList.html.twig")
      */
-    public function tagAction($slug)
+    public function tagAction($slug, $page)
     {
-        return array();
+        $TagRepo = $this->getDoctrine()->getRepository('BlogBundle:Tag');
+        $Tag = $TagRepo->findOneBySlug($slug);
+        
+        $pagination = $this->getPaginatedPosts(array(
+            'status' => 'published',
+            'orderBy' => 'p.publishedDate',
+            'orderDir' => 'DESC',
+            'tagSlug' => $slug
+        ), $page);
+
+        return array(
+            'pagination' => $pagination,
+            'listTitle' => sprintf('Wpisy z tagiem "%s"', $Tag->getName())
+        );
+    }
+    
+    protected function getPaginatedPosts(array $params = array(), $page){
+        
+        $PostRepo = $this->getDoctrine()->getRepository('BlogBundle:Post');
+        $qb = $PostRepo->getQueryBuilder($params);
+        
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate($qb, $page, $this->itemsLimit);
+        
+        return $pagination;
+
     }
 }
