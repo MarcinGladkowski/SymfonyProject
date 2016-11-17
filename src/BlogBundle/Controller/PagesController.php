@@ -18,7 +18,7 @@ class PagesController extends Controller {
     }
     
     /**
-     * @Route("/contact", name = "blog_cotact")
+     * @Route("/contact", name = "blog_contact")
      * @Template()
      */
     public function contactAction()

@@ -38,7 +38,8 @@ class BlogExtension extends \Twig_Extension {
     
     public function getFunctions() {
         return array (
-            new \Twig_SimpleFunction('print_Categories_List', array($this, 'printCategoriesList'), array('is_safe' => array('html')))
+            new \Twig_SimpleFunction('print_Categories_List', array($this, 'printCategoriesList'), array('is_safe' => array('html'))),
+            new \Twig_SimpleFunction('print_Main_Menu', array($this, 'printMainMenu'), array('is_safe' => array('html')))
         );
     }
     
@@ -52,5 +53,37 @@ class BlogExtension extends \Twig_Extension {
             'categoriesList' => $this->categoriesList
         ));
     }
+    
+    public function printMainMenu(){
+        $mainMenu = array(
+            'home' => 'blog_index',
+            'o mnie' => 'blog_about',
+            'kontakt' => 'blog_contact'
+        );
+        
+        return $this->enviroment->render('BlogBundle:Template:mainMenu.html.twig', array(
+            'mainMenu' => $mainMenu
+        ));
+    }
+    
+    public function tagsCloud($limit = 40, $minFontSize = 1, $maxFontSize = 3.5){
+        $TagRepo = $this->doctrine->getRepository('BlogBundle:Tag');
+        $tagList = $TagRepo->getTagsListOcc();
+    }
+    
+    protected function prepareTagsCloud($tagsList, $limit, $minFontSize, $maxFontSize){
+        $occs = array_map(function($row){
+            return (int)$row['occ'];
+        }, $tagsList);
+        
+        $minOcc = min($occs);
+        $maxOcc = max($occs);
+        
+        $spread = $maxOcc - $minOcc;
+        
+        $spread = ($spread == 0) ? 1 : $spread;
+        
+        // 4:22
+     }
     
 }
