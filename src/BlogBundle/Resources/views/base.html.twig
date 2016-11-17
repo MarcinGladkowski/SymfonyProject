@@ -39,14 +39,14 @@
                                 <li><a href="#">KONTAKT</a></li>
                             </ul>
                         </nav>
-
-                        <ul class="categories">
+                            {{ print_Categories_List() }}
+                        {#<ul class="categories">
                             <li><a href="#">Samoloty osobowe i pasażerskie</a></li>
                             <li><a class="active" href="#">Samoloty odrzutowe</a></li>
                             <li><a href="#">Samoloty wojskowe</a></li>
                             <li><a href="#">Proy kosmiczne</a></li>
                             <li><a href="#">Tajne rozwiązania</a></li>
-                        </ul>
+                        </ul>#}
                         
                         <!-- 
                         <div class="user-panel">
@@ -76,7 +76,6 @@
             <div class="header">
                 <div class="pos-center">
                     <h2 class="left-side">{% spaceless %}{% block contentTitle %}{% endblock %}{% endspaceless %}</h2>
-                    
                     {% if hideSearch is not defined %}
                     <form class="right-side" action="{{ path('blog_search') }}">
                         <input type="text" value="{{ searchParam is defined ? searchParam : '' }}" name="search" placeholder="Wyszukaj">
@@ -94,13 +93,14 @@
                     <div class="right-side sidebar">
                         <div class="menu">
                             <h3>Kategorie</h3>
-                            <ul>
+                          {#  <ul>
                                 <li><a href="#">Samoloty osobowe i pasażerskie</a></li>
                                 <li><a class="active" href="#">Samoloty odrzutowe</a></li>
                                 <li><a href="#">Samoloty wojskowe</a></li>
                                 <li><a href="#">Promy kosmiczne</a></li>
                                 <li><a href="#">Tajne rozwiązania</a></li>
-                            </ul>
+                            </ul>#}
+                          {{ print_Categories_List() }}
                         </div>
 
                         <div class="tag-cloud">
