@@ -94,31 +94,11 @@
                     <div class="right-side sidebar">
                         <div class="menu">
                             <h3>Kategorie</h3>
-                          {#  <ul>
-                                <li><a href="#">Samoloty osobowe i pasażerskie</a></li>
-                                <li><a class="active" href="#">Samoloty odrzutowe</a></li>
-                                <li><a href="#">Samoloty wojskowe</a></li>
-                                <li><a href="#">Promy kosmiczne</a></li>
-                                <li><a href="#">Tajne rozwiązania</a></li>
-                            </ul>#}
+                        
                           {{ print_Categories_List() }}
                         </div>
-
-                        <div class="tag-cloud">
-                            <h3>Chmura tagów</h3>
-                            <div class="tags">
-                                <a style="font-size: 1.5rem" href="#">Advanced</a>
-                                <a style="font-size: 2.3rem" href="#">Blackbird</a>
-                                <a style="font-size: 1.3rem" href="#">Development</a>
-                                <a style="font-size: 2.3rem" href="#">Dwa</a>
-                                <a style="font-size: 2.3rem" href="#">Froom</a>
-                                <a style="font-size: 2rem" href="#">Lockheed</a>
-                                <a style="font-size: 1.5rem" href="#">Los</a>
-                                <a style="font-size: 1.3rem" href="#">Newadzie</a>
-                                <a style="font-size: 1.1rem" href="#">Palmdale</a>
-                                <a style="font-size: 1.8rem" href="#">Plant SR</a>
-                            </div>
-                        </div>
+                       
+                       {{ print_Tags_Cloud() }}
 
                         <div class="list-widget">
                             <h3>Najczęściej komentowane</h3>

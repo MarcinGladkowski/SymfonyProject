@@ -47,7 +47,7 @@
                                 </div>
                                 <img src="{{ asset('bundles/blog/img/default-thumbnail.jpg')}}" alt="">
                             </div>
-                            {{ post.content|raw }}                    
+                            {{ post.content|b_shorten }}                    
                             <footer>
                                 <a class="comments" href="#">Komentarzy (31)</a>
                                 <a href="{{ path('blog_post', {'slug': post.slug } )}}" class="btn-green">Czytaj całość ...</a>

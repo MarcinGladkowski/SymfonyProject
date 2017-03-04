@@ -39,7 +39,14 @@ class BlogExtension extends \Twig_Extension {
     public function getFunctions() {
         return array (
             new \Twig_SimpleFunction('print_Categories_List', array($this, 'printCategoriesList'), array('is_safe' => array('html'))),
-            new \Twig_SimpleFunction('print_Main_Menu', array($this, 'printMainMenu'), array('is_safe' => array('html')))
+            new \Twig_SimpleFunction('print_Main_Menu', array($this, 'printMainMenu'), array('is_safe' => array('html'))),
+            new \Twig_SimpleFunction('print_Tags_Cloud', array($this, 'tagsCloud'), array('is_safe' => array('html'))),
+        );
+    }
+    
+    public function getFilters() {
+        return array(
+            new \Twig_SimpleFilter('b_shorten', array($this, 'shorten'), array('is_safe' => array('html'))),
         );
     }
     
@@ -68,7 +75,13 @@ class BlogExtension extends \Twig_Extension {
     
     public function tagsCloud($limit = 40, $minFontSize = 1, $maxFontSize = 3.5){
         $TagRepo = $this->doctrine->getRepository('BlogBundle:Tag');
-        $tagList = $TagRepo->getTagsListOcc();
+        $tagsList = $TagRepo->getTagsListOcc();
+        $tagsList = $this->prepareTagsCloud($tagsList, $limit, $minFontSize, $maxFontSize);
+        
+                
+        return $this->enviroment->render('BlogBundle:Template:tagsCloud.html.twig', array(
+            'tagsList' => $tagsList
+        ));
     }
     
     protected function prepareTagsCloud($tagsList, $limit, $minFontSize, $maxFontSize){
@@ -83,7 +96,33 @@ class BlogExtension extends \Twig_Extension {
         
         $spread = ($spread == 0) ? 1 : $spread;
         
-        // 4:22
-     }
+        usort($tagsList, function($a, $b){
+            $ao = $a['occ'];
+            $bo = $b['occ'];
+            
+            if($ao === $bo) return 0;
+            
+            return ($ao < $bo) ? 1 : -1;
+        });
+        
+        $tagsList = array_slice($tagsList, 0, $limit);
+        
+        shuffle($tagsList);
+        
+        foreach($tagsList as &$row){
+            $row['fontSize'] = round(($minFontSize + ($row['occ'] - $minOcc) * ($maxFontSize - $minFontSize) / $spread), 2);
+        }
+
+        return $tagsList;
+    }
+    
+    public function shorten($text, $length = 3, $wrapTag = 'p'){
+        $text = strip_tags($text);
+        $text = substr($text, 0, $length).'[...]';
+        $openTag = "<$wrapTag>";    
+        $closeTag = "<$wrapTag>";
+        
+        return $openTag.$text.$closeTag;
+    }
     
 }

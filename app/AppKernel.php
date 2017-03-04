@@ -18,6 +18,7 @@ class AppKernel extends Kernel
             new BlogBundle\BlogBundle(),
             new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
+            new UserBundle\UserBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

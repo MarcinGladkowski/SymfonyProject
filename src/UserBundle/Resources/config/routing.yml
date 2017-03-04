@@ -1,0 +1,14 @@
+common_user:
+    resource: "@UserBundle/Controller/"
+    type:     annotation
+    prefix: /
+    
+#login:
+#   path: /login
+blog_index:
+   path: /
+_check_path:
+   path: /login
+_logout:
+   path: /logout
+    

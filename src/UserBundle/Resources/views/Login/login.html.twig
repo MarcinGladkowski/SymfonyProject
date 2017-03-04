@@ -1,0 +1,91 @@
+{% extends "BlogBundle::base.html.twig" %}
+
+{% set hideSidebar  = true %}
+{% set hideSearch  = true %}
+
+{% block pagetitle %}Zaloguj się lub zarejestruj{% endblock %}
+
+{% block contentTitle %}Logowanie i rejestracja{% endblock %}
+
+{% block content %}
+    
+    {% if error %}
+        <div class="notification error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}
+    
+    <div class="login-register two-cols">
+                        <div class="col col-bdr">
+
+                            <h2 class="strong">Logowanie</h2>
+
+                            <form class="login-form" action="{{ path('login') }}" method="post">
+                                
+                                <div class="form-row">
+                                    <label for="username" class="required">Login</label>
+                                    <input id="username" type="text" name="_username" value="{{ last_username }}">
+                                </div>
+
+                                <div class="form-row">
+                                    <label for="password" class="required">Hasło</label>
+                                    <input id="password" type="password" name="_password">
+                                </div>
+
+                                <label for="remember_me" class="checkbox remember">
+                                    <input type="checkbox" id="remember_me" name="_remember_me" checked > Zapamiętaj mnie
+                                </label>
+
+                                <button type="submit" class="btn-green submit">Zaloguj</button>
+                            </form>
+
+                            <div class="remember-pass-form">
+                                <h2 class="strong">Przypomnij hasło</h2>
+                                
+                                
+                                {{ form(rememberPassword) }} 
+
+                                {#<form action="#" method="post">
+                                    
+                                    <div class="form-row">
+                                        <label for="email" class="required">Twój email</label>
+                                        <input id="email" type="text">
+                                    </div>
+
+                                    <button class="btn-green submit">Przypomnij</button>
+                                </form>#}
+                            </div>
+
+                        </div>
+
+                        <div class="col">
+
+                            <h2 class="strong">Rejestracja</h2>
+
+                            <form action="#" method="post">                                
+
+                                <div class="form-row">
+                                    <label for="email" class="required">Email</label>
+                                    <input type="text" id="email">
+                                </div>
+
+                                <div class="form-row">
+                                    <label for="email" class="required">Nick</label>
+                                    <input type="text" id="email">
+                                </div>
+
+                                <div class="form-row">
+                                    <label for="pass" class="required">Hasło</label>
+                                    <input type="text" id="pass">
+                                </div>
+
+                                <div class="form-row">
+                                    <label for="passConf" class="required">Powtorz hasło</label>
+                                    <input type="text" id="passConf">
+                                </div>
+
+                                <button class="btn-green submit">Zarejestruj</button>
+                            </form>
+                        </div>
+                    </div>
+    
+    
+{% endblock %}
