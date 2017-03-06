@@ -1,0 +1,27 @@
+{% extends "BlogBundle::base.html.twig" %}
+
+{% set hideSidebar  = true %}
+{% set hideSearch  = true %}
+
+{% block pagetitle %}Zaloguj się lub zarejestruj{% endblock %}
+
+{% block contentTitle %}Logowanie i rejestracja{% endblock %}
+
+{% block content %}
+    
+   {# {% if error %}
+        <div class="notification error">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+    {% endif %}#}
+    
+   <div class="login-register two-cols">
+
+       <div class="remember-pass-form">
+           <h2 class="strong">Przypomnij hasło</h2>
+
+           {{ form(rememberPassword) }} 
+
+       </div>
+   </div>
+    
+    
+{% endblock %}

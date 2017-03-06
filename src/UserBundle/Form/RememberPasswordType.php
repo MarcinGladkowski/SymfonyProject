@@ -8,6 +8,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class RememberPasswordType extends AbstractType
@@ -25,7 +26,7 @@ class RememberPasswordType extends AbstractType
                             new Assert\Email()
                         )
                  ))
-                 ->add('save', ButtonType::class, array(
+                 ->add('save', SubmitType::class, array(
                         'label' => 'Przypomnij hasło'
                  ));
     }

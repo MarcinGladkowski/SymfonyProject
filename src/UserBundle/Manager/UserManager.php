@@ -28,6 +28,7 @@ class UserManager {
     }
     
     protected function generateActionToken() {
+       
         return substr(md5(uniqid(NULL, TRUE)), 0, 20);
     }
     

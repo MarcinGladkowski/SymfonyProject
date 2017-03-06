@@ -1,7 +1,7 @@
 services:
     user_mailer:
         class: UserBundle\Mailer\UserMailer
-        arguments: [@mailer, "marcingladkowski@gmail.com", "Marcin"]
+        arguments: ['@mailer', "marcingladkowski@gmail.com", "Marcin"]
     user_manager:
         class: UserBundle\Manager\UserManager
-        arguments: [@doctrine, @router, @templating, @security.encoder_factory, @user_mailer]
+        arguments: ['@doctrine', '@router', '@templating', '@security.encoder_factory', '@user_mailer']

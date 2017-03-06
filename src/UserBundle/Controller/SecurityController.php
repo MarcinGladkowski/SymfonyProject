@@ -26,13 +26,20 @@ class SecurityController extends Controller {
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
         
-        $rememberPassword = $this->createForm(RememberPasswordType::class);
+        $rememberPassword = $this->createForm(RememberPasswordType::class, array(
+            'action' => $this->generateUrl('login'),
+            ));
         
         $rememberPassword->handleRequest($request);
+        
+
         if($request->isMethod('POST')){
+          
+            
             if ($rememberPassword->isSubmitted() && $rememberPassword->isValid()) {
                 
                 try {
+                    
                     $userEmail = $rememberPassword->get('email')->getData();
 
                     $userManager = $this->get('user_manager');
@@ -47,7 +54,7 @@ class SecurityController extends Controller {
                     $error = new FormError($exc->getMessage());
                     $rememberPassword->get('email')->addError($error);
                 }
-               
+            
             }
         }
 
@@ -79,4 +86,46 @@ class SecurityController extends Controller {
 
         return $this->redirect($this->generateUrl('login'));
     }
+    
+     /**
+     * @Route("/reset-password",name="reset_password")
+     */
+    public function resetAction(Request $request){
+                
+        $rememberPassword = $this->createForm(RememberPasswordType::class, array(
+            'action' => $this->generateUrl('login'),
+            ));
+        
+        $rememberPassword->handleRequest($request);
+        
+
+        if($request->isMethod('POST')){
+          
+            
+            if ($rememberPassword->isSubmitted() && $rememberPassword->isValid()) {
+                
+                try {
+                    
+                    $userEmail = $rememberPassword->get('email')->getData();
+
+                    $userManager = $this->get('user_manager');
+
+                    $userManager->sendResetPasswordLink($userEmail);
+                    
+                    $Session->getFlashBag()->add('success', 'Zostało wysłane!');
+                    
+                    return $this->redirect($this->generateUrl('login'));
+                    
+                } catch (UserException $exc) {
+                    $error = new FormError($exc->getMessage());
+                    $rememberPassword->get('email')->addError($error);
+                }
+            
+            }
+        }
+
+        return $this->render('UserBundle:Login:reset.html.twig', array(
+        'rememberPassword' => $rememberPassword->createView()
+         ));
+    } 
 }
