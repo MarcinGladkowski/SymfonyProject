@@ -9,6 +9,7 @@ use Symfony\Component\Security\Core\Encoder\EncoderFactory;
 use UserBundle\Mailer\UserMailer;
 use UserBundle\Exception\UserException;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use UserBundle\Entity\User;
 
 class UserManager {
     
@@ -28,8 +29,8 @@ class UserManager {
     }
     
     protected function generateActionToken() {
-       
-        return substr(md5(uniqid(NULL, TRUE)), 0, 20);
+       $result = substr(md5(uniqid(NULL, TRUE)), 0, 20);
+        return $result;
     }
     
     protected function getRandomPassword() {
@@ -44,13 +45,12 @@ class UserManager {
 }
 
     public function sendResetPasswordLink($userEmail) {
-        $User = $this->doctrine->getRepository('UserBundle:User')
-                ->findByEmail($userEmail);
+        $User = $this->doctrine->getRepository('UserBundle:User')->findOneBy(array('email' => $userEmail));
 
         if ($User === null) {
             throw new UserException('Nie znaleziono takiego użytkownika');
         }
-
+        
         $User->setActionToken($this->generateActionToken());
 
         $em = $this->doctrine->getManager();
@@ -67,7 +67,7 @@ class UserManager {
             'resetUrl' => $resetUrl
         ));
 
-        $this->userMailer->send($User, 'Link resetujący hasło', $htmlBody);
+        $this->userMailer->send($User, 'Link resetujący hasło', $emailBody);
         
         return true;
     }
@@ -101,6 +101,57 @@ class UserManager {
         
         return true;
         
+    }
+    
+    public function registerUser(User $User){
+        
+        
+        if(null !== $User->getId()){
+            throw new UserException('Taki użytkownik już istnieje!');
+        }
+        
+        $encoder = $this->encoderFactory->getEncoder($User);
+        $encodedPasswd = $encoder->encodePassword($User->getPlainPassword(), $User->getSalt());
+        
+        $User->setPassword($encodedPasswd);
+        $User->setActionToken($this->generateActionToken());
+        $User->setEnabled(false);
+        
+        $em = $this->doctrine->getManager();
+        $em->persist($User);
+        $em->flush();
+        
+        $urlParams = array(
+            'actionToken' => $User->getActionToken()
+        );
+        
+        $activationUrl = $this->router->generate('user_activateAccount', $urlParams, UrlGeneratorInterface::ABSOLUTE_URL);
+        
+        $emailBody = $this->templating->render('UserBundle:Email:accountActivation.html.twig', array(
+            'plainPasswd' => $plainPasswd
+        ));
+        
+        $this->userMailer->send($User, 'Nowe konto utworzono - email rejestracyjny', $emailBody);
+        
+        return true;
+    }
+    
+    public function activateAccount($actionToken){
+        
+          $User = $this->doctrine->getRepository('UserBundle:User')->findByActionToken($actionToken);
+        
+        if ($User === null) {
+            throw new UserException('Podano błędne parametry akcji');
+        }
+        
+        $User->setEnabled(true);
+        $User->setActionToken(null);
+        
+        $em = $this->doctrine->getManager();
+        $em->persist($User);
+        $em->flush();
+        
+        return true;
     }
 
 }

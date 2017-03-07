@@ -2,12 +2,18 @@
 
 namespace UserBundle\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+
 use UserBundle\Form\RememberPasswordType;
 use UserBundle\Exception\UserException;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Form\FormError;
+
+use UserBundle\Form\RegisterType;
+use UserBundle\Entity\User;
+
 
 class SecurityController extends Controller {   
     
@@ -91,7 +97,9 @@ class SecurityController extends Controller {
      * @Route("/reset-password",name="reset_password")
      */
     public function resetAction(Request $request){
-                
+       
+        $Session = $this->get('session');
+        
         $rememberPassword = $this->createForm(RememberPasswordType::class, array(
             'action' => $this->generateUrl('login'),
             ));
@@ -128,4 +136,61 @@ class SecurityController extends Controller {
         'rememberPassword' => $rememberPassword->createView()
          ));
     } 
+    
+     /**
+     * @Route("/register",name="register")
+     * @Template("UserBundle:Register:register.html.twig")
+     */
+    public function registerAction(Request $request)
+    {
+        $User = new User();
+        $registerForm = $this->createForm(RegisterType::class, $User);
+            
+        if($request->isMethod('POST')){
+            $registerForm->handleRequest($request);
+            if($registerForm->isValid()){
+                try {
+                    
+                    $Session = $this->get('session');
+
+                    $userManager = $this->get('user_manager');
+
+                    $userManager->registerUser($userEmail);
+                    
+                    $Session->getFlashBag()->add('success', 'Konto zostało założone!');
+                    
+                    return $this->redirect($this->generateUrl('login'));
+                    
+                } catch (UserException $exc) {
+                    $Session->getFlashBag()->add('error', $exc->getMessage());
+                }
+            }
+        }
+        
+        return array(
+            'registerForm' => $registerForm->createView()
+        );
+    } 
+    
+    /**
+     * @Route("/account-activation/{actionToken}",name="user_activateAccount")
+     */
+    public function activateAccountAction($actionToken)
+    {
+        try{
+            
+            $userManager = $this->get('user_manager');
+            $userManager->activateAccount($actionToken);
+            
+            $Session->getFlashBag()->add('success', 'Twoje konto zostalo aktywowane!');
+            
+        } catch(UserException $ex)
+        {
+            
+            $Session->getFlashBag()->add('error', $ex->getMessage());
+
+        }
+
+        return $this->redirect($this->generateUrl('login'));
+    }
 }

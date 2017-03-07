@@ -1,0 +1,54 @@
+{% extends "BlogBundle::base.html.twig" %}
+
+{% set hideSidebar  = true %}
+{% set hideSearch  = true %}
+
+{% block pagetitle %}Zaloguj się lub zarejestruj{% endblock %}
+
+{% block contentTitle %}Logowanie i rejestracja{% endblock %}
+
+{% block content %}
+    
+    
+    
+    <div class="login-register two-cols">
+                        <div class="col col-bdr">
+
+                           
+                        </div>
+
+                        <div class="col">
+
+                            {#<h2 class="strong">Rejestracja</h2>
+
+                            <form action="#" method="post">                                
+
+                                <div class="form-row">
+                                    <label for="email" class="required">Email</label>
+                                    <input type="text" id="email">
+                                </div>
+
+                                <div class="form-row">
+                                    <label for="email" class="required">Nick</label>
+                                    <input type="text" id="email">
+                                </div>
+
+                                <div class="form-row">
+                                    <label for="pass" class="required">Hasło</label>
+                                    <input type="text" id="pass">
+                                </div>
+
+                                <div class="form-row">
+                                    <label for="passConf" class="required">Powtorz hasło</label>
+                                    <input type="text" id="passConf">
+                                </div>
+
+                                <button class="btn-green submit">Zarejestruj</button>
+                            </form>#}
+                            {{ form(registerForm) }}
+                            
+                        </div>
+                    </div>
+    
+    
+{% endblock %}

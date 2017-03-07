@@ -29,6 +29,6 @@ class UserMailer {
                   ->setTo($User->getEmail(), $User->getUsername())
                   ->setBody($htmlBody, 'text/html');
         
-        $this->swiftMailer->send($mesage);
+        $this->swiftMailer->send($message);
     }
 }
