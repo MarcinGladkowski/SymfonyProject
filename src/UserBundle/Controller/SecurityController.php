@@ -32,6 +32,8 @@ class SecurityController extends Controller {
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
         
+
+        
         $rememberPassword = $this->createForm(RememberPasswordType::class, array(
             'action' => $this->generateUrl('login'),
             ));
@@ -151,11 +153,12 @@ class SecurityController extends Controller {
             if($registerForm->isValid()){
                 try {
                     
+                    
                     $Session = $this->get('session');
 
                     $userManager = $this->get('user_manager');
 
-                    $userManager->registerUser($userEmail);
+                    $userManager->registerUser($User);
                     
                     $Session->getFlashBag()->add('success', 'Konto zostało założone!');
                     

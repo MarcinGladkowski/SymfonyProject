@@ -128,7 +128,7 @@ class UserManager {
         $activationUrl = $this->router->generate('user_activateAccount', $urlParams, UrlGeneratorInterface::ABSOLUTE_URL);
         
         $emailBody = $this->templating->render('UserBundle:Email:accountActivation.html.twig', array(
-            'plainPasswd' => $plainPasswd
+            'activationUrl' => $activationUrl
         ));
         
         $this->userMailer->send($User, 'Nowe konto utworzono - email rejestracyjny', $emailBody);

@@ -3,12 +3,16 @@
 namespace UserBundle\Entity;
 
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
-use Doctrine\ORM\EntityRepository;
+use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="UserBundle\Repository\UserRepository")
  * @ORM\Table(name="users")
+ * 
+ * @UniqueEntity(fields={"username"})
+ * @UniqueEntity(fields={"email"})
  */
 class User implements AdvancedUserInterface, \Serializable {
     
@@ -22,19 +26,29 @@ class User implements AdvancedUserInterface, \Serializable {
     
     /**
      * @ORM\Column(type="string", length = 20, unique = true)
+     * @Assert\NotBlank
+     * @Assert\Length(min=5, max=20)
      */
     private $username;
     
     /**
      * @ORM\Column(type="string", length = 120, unique = true)
+     * @Assert\NotBlank
+     * @Assert\Email
+     * @Assert\Length(max=120)
      */
     private $email;
     
     /**
      * @ORM\Column(type="string", length = 64)
+     * @Assert\Length(max=20)
      */
     private $password;
     
+    /**
+     * @Assert\NotBlank
+     * @Assert\Length(min=8)
+     */
     private $plainPassword;
     
     /**
@@ -107,6 +121,12 @@ class User implements AdvancedUserInterface, \Serializable {
     }
 
     public function getRoles() {
+        
+        if(empty($this->roles)){
+            return array(
+                "ROLE_USER"
+            );
+        }
         return $this->roles;
     }
 
