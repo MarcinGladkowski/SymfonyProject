@@ -11,9 +11,10 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Validator\Constraints as Assert;
 
-class RegisterType extends AbstractType
+class AccountSettingsType extends AbstractType
 {   
  
     /**
@@ -21,40 +22,29 @@ class RegisterType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('email', EmailType::class, array(
-                        'label' => 'Email',
-                        'constraints' => array(
-                            new Assert\NotBlank(),
-                            new Assert\Email()
-                        )
-                 ))
-                 ->add('username', TextType::class, array(
+        $builder->add('username', TextType::class, array(
                      'label' => 'Nick'
                  ))
-                 ->add('plainPassword', RepeatedType::class, array(
-                        'type' => PasswordType::class,
-                        'invalid_message' => 'The password fields must match.',
-                        'options' => array('attr' => array('class' => 'password-field')),
-                        'required' => true,
-                        'first_options'  => array('label' => 'Hasło'),
-                        'second_options' => array('label' => 'Powtótrz hasło'),
+                 ->add('avatarFile', FileType::class, array(
+                      'label' => 'zmień avatar',
+                      'required' => false
                  ))
                  ->add('save', SubmitType::class, array(
-                        'label' => 'Zarejestruj'
+                        'label' => 'Zapisz zmiany'
                  ));
     }
 
     public function configureOptions(OptionsResolver $resolver) {
         $resolver->setDefaults(array(
             'data_class' => 'UserBundle\Entity\User',
-            'validation_groups' => array('Default', 'Registration')
+            'validation_groups' => array('Default', 'ChangeDetails')
         ));
     }
     /**
      * {@inheritdoc}
      */
     public function getBlockPrefix() {
-        return 'userRegister';
+        return 'accountSettings';
     }
 
 }

@@ -26,16 +26,24 @@ class User implements AdvancedUserInterface, \Serializable {
     
     /**
      * @ORM\Column(type="string", length = 20, unique = true)
-     * @Assert\NotBlank
-     * @Assert\Length(min=5, max=20)
+     * @Assert\NotBlank(
+     *      groups = {"Registration", "ChangeDetails"}
+     * )
+     * @Assert\Length(
+     *                min=5, 
+     *                max=20,
+     *                groups = {"Registration", "ChangeDetails"}     
+     * )
      */
     private $username;
     
     /**
      * @ORM\Column(type="string", length = 120, unique = true)
-     * @Assert\NotBlank
-     * @Assert\Email
-     * @Assert\Length(max=120)
+     * @Assert\NotBlank(groups = {"Registration"}  )
+     * @Assert\Email(groups = {"Registration"}  )
+     * @Assert\Length(max=120, 
+     *                 groups = {"Registration", "ChangeDetails"}   
+     * )
      */
     private $email;
     
@@ -46,8 +54,13 @@ class User implements AdvancedUserInterface, \Serializable {
     private $password;
     
     /**
-     * @Assert\NotBlank
-     * @Assert\Length(min=8)
+     * @Assert\NotBlank(
+     *          groups = {"Registration", "ChangePassword"}     
+     * )
+     * @Assert\Length(
+     *               min=8,
+     *               groups = {"Registration", "ChangePassword"}
+     * )
      */
     private $plainPassword;
     
@@ -91,10 +104,20 @@ class User implements AdvancedUserInterface, \Serializable {
      */
     private $avatar;
     
+    
+    private $avatarFile;
+    
     function __construct() {
         $this->registerDate = new \DateTime();
     }
+    
+    function getAvatarFile() {
+        return $this->avatarFile;
+    }
 
+    function setAvatarFile($avatarFile) {
+        return $this->avatarFile = $avatarFile;
+    }
 
     public function isAccountNonExpired() {
         return $this->accountNonExpired;
