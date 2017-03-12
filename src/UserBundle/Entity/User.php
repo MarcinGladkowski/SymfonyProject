@@ -5,16 +5,21 @@ namespace UserBundle\Entity;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass="UserBundle\Repository\UserRepository")
  * @ORM\Table(name="users")
+ * @ORM\HasLifecycleCallbacks
  * 
  * @UniqueEntity(fields={"username"})
  * @UniqueEntity(fields={"email"})
  */
 class User implements AdvancedUserInterface, \Serializable {
+    
+    const DEFAULT_AVATAR = 'default-avatar.jpg';
+    const UPLOAD_DIR = 'uploads/avatars/'; 
     
     
     /**
@@ -104,9 +109,28 @@ class User implements AdvancedUserInterface, \Serializable {
      */
     private $avatar;
     
-    
+    /**
+     * @var type UploadedFile
+     * 
+     * @Assert\Image(
+     *         minWidth = 50,
+     *         maxWidth = 50,
+     *          minHeight = 50,
+     *          maxHeight = 150,
+     *          maxSize = "1M",
+     *          groups = {"ChangeDetails"}       
+     * )
+     */
     private $avatarFile;
     
+    private $avatarTemp;
+    
+    /**
+     *
+     * @ORM\Column(type="datetime", nullable = true)
+     */
+    private $updateDate;
+            
     function __construct() {
         $this->registerDate = new \DateTime();
     }
@@ -115,8 +139,11 @@ class User implements AdvancedUserInterface, \Serializable {
         return $this->avatarFile;
     }
 
-    function setAvatarFile($avatarFile) {
-        return $this->avatarFile = $avatarFile;
+    function setAvatarFile(UploadedFile $avatarFile) {
+        $this->updateDate = new \DateTime();
+        $this->avatarFile = $avatarFile;
+        
+        return $this;
     }
 
     public function isAccountNonExpired() {
@@ -198,7 +225,12 @@ class User implements AdvancedUserInterface, \Serializable {
     }
 
     function getAvatar() {
-        return $this->avatar;
+        
+        if(null == $this->avatar ){
+            return User::UPLOAD_DIR.User::DEFAULT_AVATAR;
+        }
+        
+        return User::UPLOAD_DIR.$this->avatar;
     }
 
     function setId($id) {
@@ -268,5 +300,46 @@ class User implements AdvancedUserInterface, \Serializable {
            $this->password     
         ) = unserialize($serialized);
     }
+    
+    /**
+     * @ORM\PrePersist
+     * @ORM\PreUpdate
+     * 
+     */
+    public function preSave() {
+        if(null !== $this->getAvatarFile()){
+            if(null !== $this->avatar){
+                $this->avatarTemp = $this->avatar;
+            }
+            
+            $avatarName = sha1(uniqid(null, true));
+            $this->avatar = $avatarName.'.'.$this->getAvatarFile()->guessExtension();
+            
+        }
+        
+    }
+    
+     /**
+     * @ORM\PostPersist
+     * @ORM\PostUpdate
+     */
+    public function postSave(){
+        if(null !== $this->getAvatarFile()){
+            
+        
+            $this->getAvatarFile()->move($this->getUploadRootDir(), $this->avatar);
 
+            unset($this->avatarFile);
+            
+            
+            if(null !== $this->avatarTemp){
+                unlink($this->getUploadRootDir().$this->avatarTemp);
+                unset($this->avatarTemp);
+            }
+        }
+    }
+    
+    protected function getUploadRootDir(){
+        return __DIR__.'/../../../../web/'.User::UPLOAD_DIR;
+    }
 }

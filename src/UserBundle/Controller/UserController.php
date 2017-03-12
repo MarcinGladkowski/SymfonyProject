@@ -12,7 +12,7 @@ use UserBundle\Entity\User;
 class UserController extends Controller {   
     
     /**
-     * @Route("/account-settings",name="user_accountSettgins")
+     * @Route("/account-settings",name="user_accountSettings")
      * @Template("UserBundle:User:accountSettings.html.twig")
      */
     public function accountSettingsAction(Request $request)
@@ -29,26 +29,27 @@ class UserController extends Controller {
 
             if ($accountSettginsForm->isSubmitted()) {
 
-
-                if ($accountSettginsForm->isValid()) {
-
+                
+                
                     $em = $this->getDoctrine()->getManager();
                     $em->persist($User);
                     $em->flush();
-
+                    
+       
                     $Session->getFlashBag()->add('success', 'Twoje dane zostały zaktualizowane');
-                    return $this->redirect($this->generateUrl('user_accountSettgins'));
+                    return $this->redirect($this->generateUrl('user_accountSettings'));
                     
                 } else {
                     
                     $Session->getFlashBag()->add('error', 'Wystąpił błąd. Twoje dane nie zostały zaktualizowane');
-                    return $this->redirect($this->generateUrl('user_accountSettgins'));
+                    return $this->redirect($this->generateUrl('user_accountSettings'));
                 }
             }
-        }
+
 
 
         return array (
+            'user' => $User,
             'accountSettginsForm' => $accountSettginsForm->createView()
         );
     }

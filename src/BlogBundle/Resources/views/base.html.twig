@@ -9,7 +9,6 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         {% block stylesheets %}
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
-
                 {% stylesheets 
                     'bundles/blog/css/normalize.css'
                     'bundles/blog/css/main.css'
@@ -24,51 +23,31 @@
         <header id="header">
             <div class="top">
                 <div class="pos-center">
-                    
+
                     <a class="mobile-menu-trigger" href="#">
                         <span class="bar"></span>
                         <span class="bar"></span>
                         <span class="bar"></span>
                     </a>
-                    
+
                     <div class="menu">
                         <nav>
                             {{ print_Main_Menu() }}
-                            {#<ul>
-                                <li><a href="#">HOME</a></li>
-                                <li><a href="#">O MNIE</a></li>
-                                <li><a href="#">KONTAKT</a></li>
-                            </ul>#}
                         </nav>
-                            {{ print_Categories_List() }}
-                        {#<ul class="categories">
-                            <li><a href="#">Samoloty osobowe i pasażerskie</a></li>
-                            <li><a class="active" href="#">Samoloty odrzutowe</a></li>
-                            <li><a href="#">Samoloty wojskowe</a></li>
-                            <li><a href="#">Proy kosmiczne</a></li>
-                            <li><a href="#">Tajne rozwiązania</a></li>
-                        </ul>#}
-                        
-                        <!-- 
-                        <div class="user-panel">
-                            <span class="user-name">Zalogowany jako <a href="#">macq</a></span>
-                            <a class="btn-green" href="#">Wyloguj</a>
-                        </div>
-                         -->
-                        
+                        {{ print_Categories_List() }}
                         <div class="user-panel">
                             <div class="btn-group">
                                 <a class="btn-green" href="#">Zaloguj</a>
                                 <a class="btn-green" href="#">Zarejestruj</a>
                             </div>
                         </div> 
-                       
+
                     </div>
                     <div class="clearfix"></div>
                 </div>
             </div>
             {% block topImage %}
-              <div class="top-image"></div>
+                <div class="top-image"></div>
             {% endblock %}
         </header>
 
@@ -120,12 +99,7 @@
         <footer id="footer">
             <div class="top">
                 <div class="pos-center">
-                  {#  <ul>
-                        <li><a href="#">Home</a></li>
-                        <li><a href="#">O mnie</a></li>
-                        <li><a href="#">Kontakt</a></li>
-                        <li><a href="#">Admin</a></li>
-                    </ul>#}
+                  
                 {{ print_Main_Menu() }}
 
                 </div>
