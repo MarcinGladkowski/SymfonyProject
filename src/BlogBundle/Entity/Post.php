@@ -65,7 +65,15 @@ class Post {
     private $tags;
     
     /**
-     * @ORM\Column(type="string", length=180)
+     * @ORM\ManyToOne(
+     *                 targetEntity = "UserBundle\Entity\User",
+     *       
+     * )
+     * 
+     * @ORM\JoinColumn(
+     *          name = "author_id", 
+     *          referencedColumnName = "id", 
+     * )
      */
     private $author;
     
@@ -80,14 +88,33 @@ class Post {
     private $publishedDate = null;
     
     /**
+     * @ORM\OneToMany(
+     *      targetEntity = "Comment",
+     *      mappedBy = "post"
+     * )
+     * 
+     */
+    private $comments;
+    
+    /**
      * Constructor
      */
     public function __construct()
     {
         $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->comments = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    
+    function getComments() {
+        return $this->comments;
     }
 
-    /**
+    function setComments($comments) {
+        $this->comments = $comments;
+    }
+
+        /**
      * Get id
      *
      * @return integer
@@ -196,11 +223,11 @@ class Post {
     /**
      * Set author
      *
-     * @param string $author
+     * @param \UserBundle\Entity\User $author
      *
      * @return Post
      */
-    public function setAuthor($author)
+    public function setAuthor(\UserBundle\Entity\User $author)
     {
         $this->author = $author;
 
@@ -210,7 +237,7 @@ class Post {
     /**
      * Get author
      *
-     * @return string
+     * @return \UserBundle\Entity\User
      */
     public function getAuthor()
     {

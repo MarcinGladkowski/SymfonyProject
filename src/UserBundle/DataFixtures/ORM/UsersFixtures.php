@@ -63,6 +63,8 @@ class UsersFixtures extends AbstractFixture implements OrderedFixtureInterface, 
             $User->setRoles(array($userDetails['role']));
             $User->setEnabled(true);
             
+            $this->addReference('user-'.$userDetails['nick'], $User);
+            
             $manager->persist($User);
         }
         

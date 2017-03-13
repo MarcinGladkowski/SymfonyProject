@@ -16,7 +16,7 @@ class PostsFixtures extends AbstractFixture implements OrderedFixtureInterface{
                 'content' => 'Jakaś treść',
                 'category' => 'osobowe',
                 'tags' => array('kosmiczne2', 'tajne3'),
-                'author' => 'Adam Nowak',
+                'author' => 'Marcin',
                 'createDate' => '2012-01-01 12:11:12',
                 'publishedDate' => NULL,
             ),
@@ -25,7 +25,7 @@ class PostsFixtures extends AbstractFixture implements OrderedFixtureInterface{
                 'content' => 'Jakaś treść2',
                 'category' => 'tajne',
                 'tags' => array('kosmiczne', 'tajne'),
-                'author' => 'Marcin Nowak',
+                'author' => 'Marcin',
                 'createDate' => '2014-01-01 12:11:12',
                 'publishedDate' => NULL,
             ),
@@ -34,7 +34,7 @@ class PostsFixtures extends AbstractFixture implements OrderedFixtureInterface{
                 'content' => 'Jakaś treść2',
                 'category' => 'tajne',
                 'tags' => array('kosmiczne', 'tajne'),
-                'author' => 'Marcin Nowak',
+                'author' => 'Marcin',
                 'createDate' => '2014-01-01 12:11:12',
                 'publishedDate' => NULL,
             ),
@@ -43,7 +43,7 @@ class PostsFixtures extends AbstractFixture implements OrderedFixtureInterface{
                 'content' => 'Jakaś treść2',
                 'category' => 'tajne',
                 'tags' => array('kosmiczne', 'tajne'),
-                'author' => 'Marcin Nowak',
+                'author' => 'Marcin',
                 'createDate' => '2014-01-01 12:11:12',
                 'publishedDate' => '2014-01-01 12:11:12',
             ),
@@ -52,7 +52,7 @@ class PostsFixtures extends AbstractFixture implements OrderedFixtureInterface{
                 'content' => 'Jakaś treść5',
                 'category' => 'tajne',
                 'tags' => array('kosmiczne', 'tajne'),
-                'author' => 'Marcin Gładkowski',
+                'author' => 'Marcin',
                 'createDate' => '2014-01-01 13:11:12',
                 'publishedDate' => '2014-01-01 13:11:12',
             ),
@@ -61,7 +61,7 @@ class PostsFixtures extends AbstractFixture implements OrderedFixtureInterface{
                 'content' => 'Jakaś treść6',
                 'category' => 'tajne',
                 'tags' => array('kosmiczne', 'tajne'),
-                'author' => 'Marcin Nowakowski',
+                'author' => 'Marcin',
                 'createDate' => '2015-01-01 13:11:12',
                 'publishedDate' => '2015-01-01 13:11:12',
             ),
@@ -73,7 +73,7 @@ class PostsFixtures extends AbstractFixture implements OrderedFixtureInterface{
             
             $Post->setTitle($details['title'])
                  ->setContent($details['content'])
-                 ->setAuthor($details['author'])
+                 ->setAuthor($this->getReference('user-'.$details['author']))
                  ->setCreateDate(new \DateTime($details['createDate']));
                               
             if(null !== $details['publishedDate']){        

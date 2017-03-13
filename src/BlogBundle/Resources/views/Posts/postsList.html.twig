@@ -27,7 +27,7 @@
                                 <h1><a href="{{ path('blog_post', {'slug': post.slug } )}}">{{ post.title }}</a></h1>
 
                                 <div class="meta-data">
-                                    <div class="author">Autor <a href="#">{{ post.author }}</a></div>
+                                    <div class="author">Autor <a href="#">{{ post.author.username }}</a></div>
                                     <div class="create-date">Dodano {{ post.publishedDate|date('d.m.Y, H.m') }}</div>
                                 </div>
                             </header>

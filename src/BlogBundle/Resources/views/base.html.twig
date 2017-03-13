@@ -35,13 +35,23 @@
                             {{ print_Main_Menu() }}
                         </nav>
                         {{ print_Categories_List() }}
-                        <div class="user-panel">
-                            <div class="btn-group">
-                                <a class="btn-green" href="#">Zaloguj</a>
-                                <a class="btn-green" href="#">Zarejestruj</a>
-                            </div>
-                        </div> 
-
+                        {% if app.user %}
+                            <div class="user-panel">
+                                <div class="btn-group">
+                                    <span class='user-name'>Zalogowany jako<a class="btn-green" href="{{ path('user_accountSettings') }}">{{ app.user.username }}</a> </span>
+                                    <a class="btn-green" href="{{ path('_logout') }}">Wyloguj</a>
+                                </div>
+                            </div> 
+                        {% else %}
+                            <div class="user-panel">
+                                <div class="btn-group">
+                                    {% set loginUrl = path('login') %}
+                                    <a class="btn-green" href="{{ loginUrl }}">Zaloguj</a>
+                                    <a class="btn-green" href="{{ loginUrl }}">Zarejestruj</a>
+                                </div>
+                            </div> 
+                        {% endif %}
+                        
                     </div>
                     <div class="clearfix"></div>
                 </div>

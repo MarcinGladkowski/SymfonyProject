@@ -343,6 +343,6 @@ class User implements AdvancedUserInterface, \Serializable {
     }
     
     protected function getUploadRootDir(){
-        return __DIR__.'/../../../../web/'.User::UPLOAD_DIR;
+        return __DIR__.'/../../../web/'.User::UPLOAD_DIR;
     }
 }
