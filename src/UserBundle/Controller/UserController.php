@@ -6,6 +6,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use UserBundle\Form\AccountSettingsType;
+use UserBundle\Form\ChangePasswordType;
 use UserBundle\Entity\User;
 
 
@@ -23,7 +24,7 @@ class UserController extends Controller {
        
         $accountSettginsForm = $this->createForm(AccountSettingsType::class, $User);
 
-        if ($request->isMethod('POST')) {
+        if ($request->isMethod('POST') && $request->request->has('accountSettings')) {
 
             $accountSettginsForm->handleRequest($request);
 
@@ -45,12 +46,41 @@ class UserController extends Controller {
                     return $this->redirect($this->generateUrl('user_accountSettings'));
                 }
             }
+            
+//            change password
+            $changePasswdForm = $this->createForm(ChangePasswordType::class, $User);
+
+            if ($request->isMethod('POST') && $request->request->has('changePassword')) {
+
+            $changePasswdForm->handleRequest($request);
+
+            if ($changePasswdForm->isSubmitted()) {
+                
+                if($changePasswdForm->isValid()){
+                    try {
+
+                        
+                        $userManager = $this->get('user_manager');
+
+                        $userManager->changePassword($User);
+
+                        $Session->getFlashBag()->add('success', 'Twoje hasło zostało zmienione!');
+
+                        return $this->redirect($this->generateUrl('user_accountSettings'));
+                    } catch (UserException $exc) {
+                        $Session->getFlashBag()->add('error', $exc->getMessage());
+                    }
+                } else {
+                     $Session->getFlashBag()->add('error', 'Popraw błędy formularza!');
+                }
+                }
+            }
 
 
-
-        return array (
+            return array (
             'user' => $User,
-            'accountSettginsForm' => $accountSettginsForm->createView()
+            'accountSettginsForm' => $accountSettginsForm->createView(),
+            'changePasswdForm' => $changePasswdForm->createView()
         );
     }
 }

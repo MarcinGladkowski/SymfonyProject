@@ -54,7 +54,10 @@ class User implements AdvancedUserInterface, \Serializable {
     
     /**
      * @ORM\Column(type="string", length = 64)
-     * @Assert\Length(max=20)
+     * @Assert\Length(
+     *          max=20,
+     *          groups = {"Registration"}          
+     * )
      */
     private $password;
     

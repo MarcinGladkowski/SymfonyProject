@@ -153,5 +153,25 @@ class UserManager {
         
         return true;
     }
+    
+    public function changePassword(User $User){
+        
+        if(null == $User->getPlainPassword()){
+            throw new UserException('Nie ustawiono nowego hasła');
+        }
+        
+        $encoder = $this->encoderFactory->getEncoder($User);
+        $encoderPassword = $encoder->encodePassword($User->getPlainPassword(), $User->getSalt());
+        $User->setPassword($encoderPassword);
+        
+        
+        
+        $em = $this->doctrine->getManager();
+        $em->persist($User);
+        $em->flush();
+        
+        return true;
+        
+    }
 
 }

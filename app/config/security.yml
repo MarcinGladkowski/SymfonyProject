@@ -5,6 +5,11 @@ security:
         UserBundle\Entity\User:
             algorithm: bcrypt
     
+    
+    role_hierarchy:
+        ROLE_EDITOR: ROLE_USER
+        ROLE_ADMIN: [ROLE_EDITOR, ROLE_USER]
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLER_ADMIN, ROLE_ALLOWED_TO_SWITCH]
 
     # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
     providers:
@@ -20,6 +25,7 @@ security:
             security: false
 
         main:
+            switch_user: true
             anonymous: ~
             form_login:
                 login_path: login
@@ -39,3 +45,4 @@ security:
     access_control:
         # require ROLE_ADMIN for /admin*
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/account-settings, roles: ROLE_USER }

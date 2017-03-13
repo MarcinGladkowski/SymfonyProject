@@ -67,6 +67,14 @@
             <div class="content">
                 <div class="pos-center">
                     
+                    {% for label, flashes in app.session.flashbag.all %}
+                        {% for flash in flashes %}
+                            <div class="alert alert-{{ label }}">
+                                {{ flash }}
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    
                     {% block content %}{% endblock %}
                  
                     {% if hideSidebar is not defined %}
@@ -108,8 +116,7 @@
             <div class="bottom">
                 <div class="pos-center">
                     <div class="copyrights">
-                        <p>&copy; 2014 All rights reserved.</p>
-                        <span>Autor kursu Maciej Żukiewicz</span>
+                    Blog
                     </div>
                 </div>
             </div>

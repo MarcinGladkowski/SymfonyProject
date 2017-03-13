@@ -8,6 +8,8 @@
 {% block contentTitle %}Logowanie i rejestracja{% endblock %}
 
 {% block content %}
+    
+  
 
        {# <div id="main">
             <div class="header">
@@ -34,45 +36,15 @@
 
                             {{ form_end(accountSettginsForm) }}
                             
-                           {# <form action="#" method="post">
-                                <div class="avatar-row">
-                                    <img src="img/default-avatar.jpg" alt="">
-                                    <div class="form-row">
-                                        <label for="avatar">Zmień avatar</label>
-                                        <input type="file" id="avatar">
-                                    </div>
-                                </div>
-                            
-                                <div class="form-row">
-                                    <label for="firstname" class="required">Nick</label>
-                                    <input id="firstname" type="text">
-                                </div>
-
-                                <button class="btn-green submit">Edytuj dane</button>
-                            </form>#}
+                         
                         </div>
 
                         <div class="col col-bdl">
                             <h2 class="strong">Zmiana hasła</h2>
+                            
+                            {{ form(changePasswdForm) }}
 
-                            <form action="#" method="post">
-                                <div class="form-row">
-                                    <label for="currPasswd" class="required">Aktualne hasło</label>
-                                    <input type="text" id="currPasswd">
-                                </div>
-
-                                <div class="form-row">
-                                    <label for="newPass" class="required">Nowe hasło</label>
-                                    <input type="text" id="newPass">
-                                </div>
-
-                                <div class="form-row">
-                                    <label for="newPassConf" class="required">Powtórz hasło</label>
-                                    <input type="text" id="newPassConf">
-                                </div>
-
-                                <button class="btn-green submit">Zmień hasło</button>
-                            </form>
+                          
                         </div>
                     </div>
                 </div> <!-- .content -->
