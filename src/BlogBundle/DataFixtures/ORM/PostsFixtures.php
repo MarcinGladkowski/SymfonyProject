@@ -67,7 +67,7 @@ class PostsFixtures extends AbstractFixture implements OrderedFixtureInterface{
             ),
         );
        
-        foreach ($postsList as $details) {
+        foreach ($postsList as $idx => $details) {
         
             $Post = new Post();
             
@@ -84,6 +84,9 @@ class PostsFixtures extends AbstractFixture implements OrderedFixtureInterface{
             foreach($details['tags'] as $tagName) {
                  $Post->addTag($this->getReference('tag_'.$tagName));
             }
+            
+            $this->addReference('post-'.$idx, $Post);
+            
         $manager->persist($Post);
         }
         $manager->flush();

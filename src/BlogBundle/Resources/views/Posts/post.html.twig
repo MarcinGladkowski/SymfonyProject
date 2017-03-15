@@ -7,6 +7,15 @@
 
 {% block content %}
   <div class="left-side">
+      
+      {% for label, flashes in app.session.flashbag.all %}
+          {% for flash in flashes %}
+              <div class="alert alert-{{ label }}">
+                  {{ flash }}
+              </div>
+          {% endfor %}
+      {% endfor %}
+      
                         <article class="post">
                             <header>
                                 <h1>{{ post.title }}</h1>
@@ -40,83 +49,101 @@
                         <div class="notification block">
                             Aby dodać komentarz <strong>musisz się <a href="#">zalogować lub zarejestrować</a></strong>
                         </div>
-
-                        <section class="post-comments">
+                       
+                        
+                        {% if app.user %}
+                        <section class="post-comments" id="post-comment">
                             <header>
-                                <h3>Komentarze (12)</h3>
+                                <h3>{{ post.comments|length }}</h3>
                             </header>
 
                             <div class="comment">
-                                <img class="thumbnail" src="img/default-avatar.jpg" alt="">
+                                <img class="thumbnail" src="{{ asset(app.user.avatar) }}" alt="">
 
                                 <div class="body">
-                                    <div class="author">Jonno Riekwel</div>
-                                    <div class="create-date">17/19/2013</div>
+                                    <div class="author">{{ app.user.username }}</div>
+                                    <div class="create-date">{{ date()|date('d/m/Y') }}</div>
 
                                     <div class="clearfix"></div>
-
-                                    <form action="#" method="post">
-                                        <div class="form-row error">
-                                            <textarea name="comment" id="comment-body"></textarea>
-                                            <span>Ta wartość nie powinna być pusta.</span>
-                                        </div>
-                                        <button id="save-comment" class="submit btn-green">Dodaj</button>
-                                        <div class="clearfix"></div>
-                                    </form>
+                                    
+                                    {{ form(commentForm, {'action' : '#post-comment'}) }}
+                                    
                                 </div>
                             </div>
-
+                            {% endif %}
+                            
+                            {% for comment in post.comments %}
                             <div class="comment">
-                                <img class="thumbnail" src="img/default-avatar.jpg" alt="">
+                                <img class="thumbnail" src="{{ asset(comment.author.avatar) }}" alt="">
 
                                 <div class="body">
                                     <div class="author">
-                                        Gedy Rivera
-                                        <div class="divider"></div>
-                                        <a href="#" class="delete">Usuń</a>
+                                        {{ comment.author.username }}
+                                        
+                                        {% if is_granted('ROLE_ADMIN') %}
+                                            <div class="divider"></div>
+                                            <button data-id='{{ comment.id}}' class="delete delete-comment">Usuń</button>
+                                        {% endif %}
+                                        
+                                        
                                     </div>
-                                    <div class="create-date">17/19/2013</div>
+                                        <div class="create-date">{{ comment.createDate|date('d/m/Y')}}</div>
 
                                     <div class="clearfix"></div>
 
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem possimus autem hic nobis consequatur dolore reiciendis quaerat enim eligendi velit.</p>
+                                    <p>{{ comment.comment }}</p>
                                 </div>
                             </div>
-
-                            <div class="comment">
-                                <img class="thumbnail" src="img/default-avatar.jpg" alt="">
-
-                                <div class="body">
-                                    <div class="author">
-                                        Jonno Riekwel
-                                        <div class="divider"></div>
-                                        <a href="#" class="delete">Usuń</a>
-                                    </div>
-                                    <div class="create-date">17/19/2013</div>
-                                
-                                    <div class="clearfix"></div>
-
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem possimus autem hic nobis consequatur dolore reiciendis quaerat enim eligendi velit.</p>
-                                </div>
-                            </div>
-
-                            <div class="comment">
-                                <img class="thumbnail" src="img/default-avatar.jpg" alt="">
-
-                                <div class="body">
-                                    <div class="author">
-                                        Rogie King
-                                        <div class="divider"></div>
-                                        <a href="#" class="delete">Usuń</a>
-                                    </div>
-                                    <div class="create-date">17/19/2013</div>
-                                
-                                    <div class="clearfix"></div>
-
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Rem possimus autem hic nobis consequatur dolore reiciendis quaerat enim eligendi velit.</p>
-                                </div>
-                            </div>
+                            {% endfor %}
+                          
+                        
                         </section>
 
                     </div> <!-- .left -->              
 {% endblock %}
+
+{% if is_granted('ROLE_ADMIN') %}
+    {% block javascripts %}
+        {{ parent() }}
+        
+        <script>
+            $(document).ready(function(){
+                
+                $('.delete-comment').on('click',  function(){
+     
+                   console.log(this);
+                   
+                   var btn = $(this);
+                   var id = btn.attr('data-id');
+                   var url = '{{ path('blog_deleteComment') }}/' + id;
+                   
+                  
+                   
+                  $.get(
+                        '{{ path('blog_deleteComment') }}',
+                        {
+                            commentId: id
+                        },
+                        function(dane){
+                            console.log(dane.message);
+                            
+                            
+                            if(dane.status === 'ok'){
+                               btn.closest('.comment').remove(); 
+                            }
+                        }
+                    );
+                   
+                   
+                   
+                   
+                   
+                   
+                });
+                
+            });
+        </script>
+        
+        
+    {% endblock %}
+{% endif %}

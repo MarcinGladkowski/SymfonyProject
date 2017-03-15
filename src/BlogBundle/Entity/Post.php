@@ -93,6 +93,8 @@ class Post {
      *      mappedBy = "post"
      * )
      * 
+     * @ORM\OrderBy({"createDate" = "DESC"})
+     * 
      */
     private $comments;
     

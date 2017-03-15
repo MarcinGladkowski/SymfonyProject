@@ -6,6 +6,8 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use BlogBundle\Entity\Comment;
+use BlogBundle\Form\CommentType;
 
 class PostsController extends Controller {   
     
@@ -63,8 +65,11 @@ class PostsController extends Controller {
      * @Route("/{slug}", name = "blog_post")
      * @Template()
      */
-    public function postAction($slug)
+    public function postAction(Request $request, $slug)
     {   
+        
+        $Session = $this->get('session');
+        
         $PostRepo = $this->getDoctrine()->getRepository('BlogBundle:Post');
         
         $Post = $PostRepo->getPublishedPost($slug);
@@ -72,9 +77,43 @@ class PostsController extends Controller {
         if(null === $Post){
             throw $this->createNotFoundException('Post nie został odnaleziony');
         }
+        
+        if(null !== $this->getUser()){
+            
+            $Comment = new Comment();
+            $Comment->setAuthor($this->getUser());
+            $Comment->setPost($Post);
+            
+            
+            $commentForm = $this->createForm(CommentType::class, $Comment);
+            
+            if($request->isMethod('POST')){
+            
+             $commentForm->handleRequest($request);
+
+                    if ($commentForm->isSubmitted() && $commentForm->isValid()) {
+                        
+                                $em = $this->getDoctrine()->getManager();
+                                $em->persist($Comment);
+                                $em->flush();
+                                
+                                $Session->getFlashBag()->add('success', 'Komentarz dodany!');
+                                
+                                $redirecUrl = $this->generateUrl('blog_post', array(
+                                        'slug' => $Post->getSlug()
+                                ));
+                                
+                                return $this->redirect($redirecUrl);
+                                
+                    }
+            
+            
+            }
+        }
          
         return array(
-            'post' => $Post
+            'post' => $Post,
+            'commentForm' => isset($commentForm) ? $commentForm->createView() : null
         );
     }
     
@@ -137,5 +176,34 @@ class PostsController extends Controller {
         
         return $pagination;
 
+    }
+    
+    
+    /**
+     * @Route("/post/comment/delete/{commentId}",
+     * name = "blog_deleteComment")
+     */
+    public function deleteCommentAction(Request $request, $commentId = 0) {
+        
+       $commentId = $request->query->get('commentId');
+        
+        $comments = $this->getDoctrine()->getRepository('BlogBundle:Comment');
+        
+        $Comment = $comments->findOneBy(array('id' => $commentId));
+       
+        
+        if(null === $Comment){
+            throw $this->createNotFoundException('Komentarz nie został odnaleziony');
+        }
+        
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($Comment);
+        $em->flush();
+        
+        return new \Symfony\Component\HttpFoundation\JsonResponse(array(
+            'status' => 'ok',
+            'message' => 'Komentarz został usunięty'
+        ));
+       
     }
 }

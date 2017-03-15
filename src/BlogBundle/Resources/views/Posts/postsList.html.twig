@@ -49,7 +49,7 @@
                             </div>
                             {{ post.content|b_shorten }}                    
                             <footer>
-                                <a class="comments" href="#">Komentarzy (31)</a>
+                                <a class="comments" href="#">Komentarzy {{ post.comments|length }}</a>
                                 <a href="{{ path('blog_post', {'slug': post.slug } )}}" class="btn-green">Czytaj całość ...</a>
                             </footer>
                         </article> <!-- .post -->
