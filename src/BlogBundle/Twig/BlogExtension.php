@@ -41,6 +41,7 @@ class BlogExtension extends \Twig_Extension {
             new \Twig_SimpleFunction('print_Categories_List', array($this, 'printCategoriesList'), array('is_safe' => array('html'))),
             new \Twig_SimpleFunction('print_Main_Menu', array($this, 'printMainMenu'), array('is_safe' => array('html'))),
             new \Twig_SimpleFunction('print_Tags_Cloud', array($this, 'tagsCloud'), array('is_safe' => array('html'))),
+            new \Twig_SimpleFunction('print_Recent_Commented', array($this, 'recentCommented'), array('is_safe' => array('html'))),
         );
     }
     
@@ -123,6 +124,18 @@ class BlogExtension extends \Twig_Extension {
         $closeTag = "<$wrapTag>";
         
         return $openTag.$text.$closeTag;
+    }
+    
+    public function recentCommented($limit = 3) {
+        
+        $PostRepo = $this->doctrine->getRepository('BlogBundle:Post');
+        
+        $postList = $PostRepo->getRecentCommented($limit);
+        
+        return $this->enviroment->render('BlogBundle:Template:recentCommented.html.twig', array(
+            'PostList' => $postList
+        ));
+        
     }
     
 }

@@ -45,7 +45,7 @@
                         {% else %}
                             <div class="user-panel">
                                 <div class="btn-group">
-                                    {% set loginUrl = path('login') %}
+                                  {% set loginUrl = path('login') %}
                                     <a class="btn-green" href="{{ loginUrl }}">Zaloguj</a>
                                     <a class="btn-green" href="{{ loginUrl }}">Zarejestruj</a>
                                 </div>
@@ -97,15 +97,15 @@
                        
                        {{ print_Tags_Cloud() }}
 
-                        <div class="list-widget">
+                        {#<div class="list-widget">
                             <h3>Najczęściej komentowane</h3>
                             <ul>
                                 <li><a href="#">Tajne decyzje marki Boeing (13)</a></li>
                                 <li><a href="#">Osiągnięto prędkość 6 mach (76)</a></li>
                                 <li><a href="#">Nowa linia produkcyjna Airbus (53)</a></li>
                             </ul>
-                        </div>
-
+                        </div>#}
+                        {{ print_Recent_Commented() }}
                     </div> <!-- .right-side -->
                     {% endif %}
                 </div> <!-- .content -->

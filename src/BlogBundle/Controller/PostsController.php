@@ -103,17 +103,21 @@ class PostsController extends Controller {
                                         'slug' => $Post->getSlug()
                                 ));
                                 
-                                return $this->redirect($redirecUrl);
-                                
+                                return $this->redirect($redirecUrl);  
                     }
-            
-            
+
             }
+        }
+        
+        if ($this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+            $csrfProvider = $this->get('form.csrf_provider');
         }
          
         return array(
             'post' => $Post,
-            'commentForm' => isset($commentForm) ? $commentForm->createView() : null
+            'commentForm' => isset($commentForm) ? $commentForm->createView() : null,
+            'csrfProvider' => isset($csrfProvider) ? $csrfProvider : null,
+            'tokenName' => 'delCom$d'
         );
     }
     
@@ -180,12 +184,23 @@ class PostsController extends Controller {
     
     
     /**
-     * @Route("/post/comment/delete/{commentId}",
+     * @Route("/post/comment/delete/{commentId}/{token}",
      * name = "blog_deleteComment")
      */
-    public function deleteCommentAction(Request $request, $commentId = 0) {
+    public function deleteCommentAction(Request $request, $commentId, $token) {
         
-       $commentId = $request->query->get('commentId');
+        if (!$this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')){
+            throw $this->createAccessDeniedException('Nie masz uprawnień do tego zadania!');
+        }
+        
+        $validToken = sprintf('delCom$d', $commentId);
+        
+        if(!$this->get('form.csrf_provider')->isCsrfTokenValid($validToken, $token)){
+            throw $this->createAccessDeniedException('Błędny token akcji!');
+        }
+        
+        
+        $commentId = $request->query->get('commentId');
         
         $comments = $this->getDoctrine()->getRepository('BlogBundle:Comment');
         
