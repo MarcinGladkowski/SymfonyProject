@@ -22,10 +22,10 @@
                         <div class="form-group">
                             <select name="categoryId" class="select-block" placeholder="Kategoria">
                                 <option></option>
-                                <option {{ -1 == queryParams['categoryId'] ? 'selected="selected"':'' }} value="-1">Brak kategorii</option>
-                               {# {% for category in categoriesList %}
+                               {# <option {{ -1 == queryParams['categoryId'] ? 'selected="selected"':'' }} value="-1">Brak kategorii</option>#}
+                                {% for category in categoriesList %}
                                 <option {{ category['id'] == queryParams['categoryId'] ? 'selected="selected"':'' }} value="{{ category['id'] }}">{{ category['name'] }}</option>
-                                {% endfor %}#}
+                                {% endfor %}
                             </select>
                         </div>
 

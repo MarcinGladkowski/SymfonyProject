@@ -48,7 +48,7 @@ class PostsController extends Controller
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate($qb, $page, $limit);
         
-//        $categoriesList = $this->getDoctrine()->getRepository('BlogBundle:Category')->getAsArray();
+        $categoriesList = $this->getDoctrine()->getRepository('BlogBundle:Category')->getAsArray();
        
         $statusesList = array(
             'Wszystkie' => 'all',
@@ -59,7 +59,7 @@ class PostsController extends Controller
         return array(
             'currPage' => 'posts',
             'queryParams' => $queryParams,
-//            'categoriesList' => $categoriesList,
+            'categoriesList' => $categoriesList,
             
             'limits' => $limits,
             'currLimit' => $limit,
@@ -88,16 +88,16 @@ class PostsController extends Controller
      * 
      * @Template()
      */
-    //public function formAction(Request $Request, $id = NULL) {
-    public function formAction(Request $Request, Post $Post) {
+    public function formAction(Request $Request, $id = NULL) {
+//    public function formAction(Request $Request, Post $Post) {
         
-//        if(null == $id){
-//            $Post = new Post();
-//            $Post->setAuthor($this->getUser());
-//            $newPostForm = TRUE;
-//        }else{
-//            $Post = $this->getDoctrine()->getRepository('AirBlogBundle:Post')->find($id);
-//        }
+        if(null == $id){
+            $Post = new Post();
+            $Post->setAuthor($this->getUser());
+            $newPostForm = TRUE;
+        }else{
+            $Post = $this->getDoctrine()->getRepository('BlogBundle:Post')->find($id);
+        }
         
         if(null == $Post){
             $Post = new Post();

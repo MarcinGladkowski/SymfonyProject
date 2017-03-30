@@ -4,13 +4,16 @@ namespace BlogBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-class TagRepository extends EntityRepository {
+class TaxonomyRepository extends EntityRepository {
     
-   public function getTagsListOcc(){
-       $qb = $this->createQueryBuilder('t')
-               ->select('t.slug, t.name, COUNT(p) as occ')
-               ->leftjoin('t.posts', 'p')
-               ->groupBy('t.name');
-       return $qb->getQuery()->getArrayResult();
+   public function getQueryBuilder(array $params = array()){
+       return $this->createQueryBuilder('t');
+   }
+   
+   public function getAsArray(){
+       return $this->createQueryBuilder('t')
+               ->select('t.id, t.name')
+               ->getQuery()
+               ->getArrayResult();
    }
 }

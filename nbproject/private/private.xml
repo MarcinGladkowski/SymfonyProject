@@ -2,15 +2,6 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/wamp/www/SymfonyProject/src/UserBundle/Form/RegisterType.php</file>
-            <file>file:/C:/wamp/www/SymfonyProject/src/UserBundle/Resources/views/Login/login.html.twig</file>
-            <file>file:/C:/wamp/www/SymfonyProject/src/UserBundle/Resources/config/services.yml</file>
-            <file>file:/C:/wamp/www/SymfonyProject/src/UserBundle/Entity/User.php</file>
-            <file>file:/C:/wamp/www/SymfonyProject/src/UserBundle/Resources/views/Email/accountActivation.twig</file>
-            <file>file:/C:/wamp/www/SymfonyProject/src/UserBundle/Resources/views/Register/register.html.twig</file>
-            <file>file:/C:/wamp/www/SymfonyProject/src/UserBundle/Controller/SecurityController.php</file>
-            <file>file:/C:/wamp/www/SymfonyProject/src/UserBundle/Manager/UserManager.php</file>
-        </group>
+        <group/>
     </open-files>
 </project-private>

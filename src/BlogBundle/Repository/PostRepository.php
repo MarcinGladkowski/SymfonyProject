@@ -56,6 +56,12 @@ class PostRepository extends EntityRepository {
                     ->setParameter('searchParam', $searchParam);
         }
         
+        if(!empty($params['titleLike'])){
+            $titleLike = '%'.$params['titleLike']. '%';
+            $qb->andWhere('p.title LIKE :titleLike')
+                    ->setParameter('titleLike', $titleLike);
+        }
+        
         return $qb;
         
     }

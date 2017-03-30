@@ -19,4 +19,5 @@ class Category extends AbstractTaxonomy {
      */
     protected $posts;
     
+    
 }
