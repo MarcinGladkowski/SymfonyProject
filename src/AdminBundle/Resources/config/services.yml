@@ -3,3 +3,4 @@ services:
         class: AdminBundle\Twig\Extension\AdminExtension
         tags:
             - { name: twig.extension }
+        

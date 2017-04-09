@@ -33,6 +33,10 @@
                     <div class="menu">
                         <nav>
                             {{ print_Main_Menu() }}
+                            
+                            
+                            
+                            
                         </nav>
                         {{ print_Categories_List() }}
                         {% if app.user %}
@@ -97,14 +101,7 @@
                        
                        {{ print_Tags_Cloud() }}
 
-                        {#<div class="list-widget">
-                            <h3>Najczęściej komentowane</h3>
-                            <ul>
-                                <li><a href="#">Tajne decyzje marki Boeing (13)</a></li>
-                                <li><a href="#">Osiągnięto prędkość 6 mach (76)</a></li>
-                                <li><a href="#">Nowa linia produkcyjna Airbus (53)</a></li>
-                            </ul>
-                        </div>#}
+                        
                         {{ print_Recent_Commented() }}
                     </div> <!-- .right-side -->
                     {% endif %}

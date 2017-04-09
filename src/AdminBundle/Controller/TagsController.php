@@ -27,7 +27,7 @@ class TagsController extends Controller
      */
     public function indexAction(Request $Request, $page) {
         
-        $TagRepository = $this->getDoctrine()->getRepository('AirBlogBundle:Tag');
+        $TagRepository = $this->getDoctrine()->getRepository('BlogBundle:Tag');
         
         $qb = $TagRepository->getQueryBuilder();
         
@@ -40,7 +40,7 @@ class TagsController extends Controller
             'currPage' => 'taxonomies',
             'pagination' => $pagination,
             'deleteTokenName' => $this->deleteTokenName,
-            'csrfProvider' => $this->get('form.csrf_provider')
+//            'csrfProvider' => $this->get('form.csrf_provider')
         );
     }
     
@@ -92,14 +92,14 @@ class TagsController extends Controller
     
     /**
      * @Route(
-     *      "/delete/{id}/{token}", 
+     *      "/delete/{id}", 
      *      name="admin_tagDelete",
      *      requirements={"id"="\d+"}
      * )
      * 
      * @Template()
      */
-    public function deleteAction($id, $token) {
+    public function deleteAction($id) {
         
         $tokenName = sprintf($this->deleteTokenName, $id);
         $csrfProvider = $this->get('form.csrf_provider');
@@ -109,7 +109,7 @@ class TagsController extends Controller
             
         }else{
             
-            $Tag = $this->getDoctrine()->getRepository('AirBlogBundle:Tag')->find($id);
+            $Tag = $this->getDoctrine()->getRepository('BlogBundle:Tag')->find($id);
             $em = $this->getDoctrine()->getManager();
             $em->remove($Tag);
             $em->flush();

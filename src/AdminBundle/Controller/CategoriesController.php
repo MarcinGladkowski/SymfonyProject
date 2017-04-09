@@ -11,6 +11,8 @@ use BlogBundle\Entity\Category;
 use AdminBundle\Form\Type\TaxonomyType;
 use AdminBundle\Form\Type\CategoryDeleteType;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
 class CategoriesController extends Controller
 {    
 
@@ -26,7 +28,7 @@ class CategoriesController extends Controller
      */
     public function indexAction($page) {
         
-        $CategoryRepository = $this->getDoctrine()->getRepository('AirBlogBundle:Category');
+        $CategoryRepository = $this->getDoctrine()->getRepository('BlogBundle:Category');
         
         $qb = $CategoryRepository->getQueryBuilder();
         
@@ -60,7 +62,7 @@ class CategoriesController extends Controller
             $newCategory = TRUE;
         }
         
-        $form = $this->createForm(new TaxonomyType(), $Category);
+        $form = $this->createForm(CategoryDeleteType::class , $Category);
              
         $form->handleRequest($Request);
         
@@ -91,13 +93,19 @@ class CategoriesController extends Controller
      *      "/delete/{id}", 
      *      name="admin_categoryDelete"
      * )
-     * 
      * @Template()
      */
-    public function deleteAction(Request $Request, Category $Category) {
+    public function deleteAction(Request $Request, $id) {
         
-        $form = $this->createForm(new CategoryDeleteType($Category));
         
+        $repository = $this->getDoctrine()->getRepository('BlogBundle:Category');
+        
+        $Category = $repository->findOneBy(array('id' => $id));
+        
+        $form = $this->createForm(CategoryDeleteType::class, $Category, array(
+            '$Category' => $Category
+        ));
+
         $form->handleRequest($Request);
         
         if($form->isValid()){
@@ -114,7 +122,7 @@ class CategoriesController extends Controller
             
             if($chosen){
                 
-                $PostRepo = $this->getDoctrine()->getRepository('AirBlogBundle:Post');
+                $PostRepo = $this->getDoctrine()->getRepository('BlogBundle:Post');
                 $modifiedPosts = $PostRepo->moveToCategory($Category->getId(), $newCategoryId);
                 
                 $em = $this->getDoctrine()->getManager();
@@ -134,7 +142,7 @@ class CategoriesController extends Controller
             }
             
         }          
-        
+//        
         return array(
             'currPage' => 'taxonomies',
             'category' => $Category,

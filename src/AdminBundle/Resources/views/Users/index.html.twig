@@ -1,0 +1,57 @@
+{% extends 'AdminBundle::base.html.twig' %}
+
+{% block pageTitle %}
+	{{ parent() }} - Posty
+{% endblock %}
+
+{% block content %}
+		<!-- content container -->
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Użytkownicy</div>
+                        <div class="panel-body">
+
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th><a class="sortable" href="#">ID</a></th>
+                                            <th><a class="sortable sort-desc" href="#">Nick</a></th>
+                                            <th><a class="sortable sort-asc" href="#">Email</a></th>
+                                            <th><a class="sortable" href="#">Data rejestracji</a></th>
+                                            <th>Akcje</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for user in users%}
+                                        <tr>
+                                            <td>{{ user.id }}</td>
+                                            <td><a href="#">{{ user.username }}</a></td>
+                                            <td>{{ user.email }}</td>
+                                            <td>{{ user.registerDate.date|date("m/d/Y H:m:s") }}</td>
+                                            <td>
+                                                <a href="#" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span></a>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                           {# <ul class="pagination pull-right">
+                                <li><a href="#">&laquo;</a></li>
+                                <li class="active"><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                                <li><a href="#">&raquo;</a></li>
+                            </ul>#}
+                        </div> <!-- .panel-body -->
+                    </div> <!-- .panel -->
+                </div> <!-- .col-md-12 -->
+            </div> <!-- .row -->
+        </div> <!-- .container -->
+{% endblock %}

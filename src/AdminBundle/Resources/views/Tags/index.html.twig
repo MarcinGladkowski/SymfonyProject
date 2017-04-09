@@ -31,7 +31,9 @@
                             </thead>
                             <tbody>
                                 {% for row in pagination %}
+                                    
                                     {% set tag = row[0] %}
+                                    
                                     {% set editPath = path('admin_tagForm', {'id': tag.id}) %}
                                     <tr>
                                         <td>{{ tag.id }}</td>
@@ -42,21 +44,22 @@
                                                 <a href="{{ editPath }}" class="btn btn-primary"><span class="glyphicon glyphicon-edit"></span></a>
 
                                                 {% if is_granted('ROLE_ADMIN') %}
-                                                    {% set tokenName = csrfProvider.generateCsrfToken(deleteTokenName|format(tag.id)) %}
-                                                    {% set deletePath = path('admin_tagDelete', {'id': tag.id, 'token': tokenName}) %}
-                                                    <a href="{{ deletePath }}" class="btn btn-danger" data-confirmAction="">
+                                                   {# {% set tokenName = csrfProvider.generateCsrfToken(deleteTokenName|format(tag.id)) %}#}
+                                                   {# {% set deletePath = path('admin_tagDelete', {'id': tag.id, 'token': tokenName}) %}#}
+                                                   {# <a href="{{ deletePath }}" class="btn btn-danger" data-confirmAction="">
                                                         <span class="glyphicon glyphicon-trash"></span>
-                                                    </a>
+                                                    </a>#}
                                                 {% endif %}
                                             </div>
                                         </td>
                                     </tr>
+                                    
                                 {% endfor %}
                             </tbody>
                         </table>
                     </div>
 
-                    {{ knp_pagination_render(pagination, 'AirAdminBundle:Pagination:admin_pagination.html.twig') }}
+                    {{ knp_pagination_render(pagination, 'AdminBundle:Pagination:admin_pagination.html.twig') }}
                 </div>  <!-- .panel-body -->
             </div>  <!-- .panel -->
         </div> <!-- .col-md-12 -->

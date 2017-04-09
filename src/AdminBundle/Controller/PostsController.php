@@ -10,6 +10,8 @@ use Symfony\Component\HttpFoundation\Request;
 use BlogBundle\Entity\Post;
 use AdminBundle\Form\Type\PostType;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
 
 class PostsController extends Controller
 {
@@ -85,21 +87,16 @@ class PostsController extends Controller
      *      requirements={"id"="\d+"},
      *      defaults={"id"=NULL}
      * )
-     * 
+     * @ParamConverter("post", class="BlogBundle:Post")
      * @Template()
      */
-    public function formAction(Request $Request, $id = NULL) {
-//    public function formAction(Request $Request, Post $Post) {
-        
-        if(null == $id){
-            $Post = new Post();
-            $Post->setAuthor($this->getUser());
-            $newPostForm = TRUE;
-        }else{
-            $Post = $this->getDoctrine()->getRepository('BlogBundle:Post')->find($id);
-        }
-        
+   //  public function formAction(Request $Request, $id = NULL) {
+    
+    // Using ParamConventer
+   public function formAction(Request $Request, Post $Post = null) {
+               
         if(null == $Post){
+            
             $Post = new Post();
             $Post->setAuthor($this->getUser());
             $newPostForm = TRUE;

@@ -4,7 +4,7 @@ namespace BlogBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-class TagRepository extends EntityRepository {
+class TagRepository extends TaxonomyRepository {
     
    public function getTagsListOcc(){
        $qb = $this->createQueryBuilder('t')

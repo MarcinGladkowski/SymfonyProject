@@ -45,6 +45,15 @@ class PostRepository extends EntityRepository {
                ->setParameter('categorySlug', $params['categorySlug']);
         }
         
+        if(!empty($params['categoryId'])){
+            if(-1 == $params['categoryId']){
+                $qb->andWhere($qb->expr()->isNull('p.category'));
+            } else {
+                $qb->andWhere('c.id = :categoryId')
+                   ->setParameter('categoryId', $params['categoryId']);
+            }
+        }
+        
         if(!empty($params['tagSlug'])){
             $qb->andWhere('t.slug = :tagSlug')
                ->setParameter('tagSlug', $params['tagSlug']);
@@ -98,5 +107,20 @@ class PostRepository extends EntityRepository {
             'published' => $published,
             'unpublished' => ($all - $published)
         );
+    }
+    
+    public function moveToCategory($oldCategoryId, $newCategoryId){
+        
+        return $this->createQueryBuilder('p')
+                ->update()
+                ->set('p.category', ':newCategoryId')
+                ->where('p.category = :oldCategoryId')
+                ->setParameters(array(
+                    'newCategoryId' => $newCategoryId,
+                    'oldCategoryId' => $oldCategoryId
+                ))
+                ->getQuery()
+                ->execute();
+        
     }
 }

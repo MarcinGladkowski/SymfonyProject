@@ -2,6 +2,11 @@
 
 namespace BlogBundle\Twig;
 
+use Doctrine\Bundle\DoctrineBundle\Registry;
+
+
+
+
 /**
  * Description of BlogExtension
  *
@@ -15,6 +20,8 @@ class BlogExtension extends \Twig_Extension {
      */
     private $doctrine;
     
+   
+    
     /**
      *
      * @var \Twig_Enviroment 
@@ -23,8 +30,10 @@ class BlogExtension extends \Twig_Extension {
     
     private $categoriesList;
 
-    function __construct(\Doctrine\Bundle\DoctrineBundle\Registry $doctrine) {
+    function __construct(Registry $doctrine) {
         $this->doctrine = $doctrine;
+        
+     
     }
     
     public function initRuntime(\Twig_Environment $enviroment){
@@ -63,6 +72,10 @@ class BlogExtension extends \Twig_Extension {
     }
     
     public function printMainMenu(){
+        
+        
+
+        
         $mainMenu = array(
             'home' => 'blog_index',
             'o mnie' => 'blog_about',

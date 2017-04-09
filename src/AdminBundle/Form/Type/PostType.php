@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 
 class PostType extends AbstractType
 {
@@ -34,11 +35,8 @@ class PostType extends AbstractType
                     'placeholder' => 'Alias'
                 )
             ))
-//            ->add('content', 'ckeditor', array(
-//                'label' => 'Treść'
-//            ))
-            ->add('content', TextType::class, array(
-                'label' => 'Treść'
+            ->add('content', CKEditorType::class, array(
+                'label' => 'Wpisz treść'
             ))
             ->add('thumbnail', FileType::class, array(
                 'label' => 'Miniaturka'

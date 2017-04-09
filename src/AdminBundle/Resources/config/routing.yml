@@ -17,3 +17,8 @@ air_admin_tags:
     resource: "@AdminBundle/Controller/TagsController.php"
     type: annotation
     prefix: /tags
+    
+air_admin_users:
+    resource: "@AdminBundle/Controller/UsersController.php"
+    type: annotation
+    prefix: /users

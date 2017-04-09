@@ -44,5 +44,5 @@ security:
                 
     access_control:
         # require ROLE_ADMIN for /admin*
-        - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin-panel, roles: ROLE_ADMIN }
         - { path: ^/account-settings, roles: ROLE_USER }

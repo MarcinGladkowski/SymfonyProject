@@ -12,4 +12,10 @@
             </a>
         </li>
         {% endfor %}
+        
+        {% if is_granted('ROLE_ADMIN')  %}
+                <a href="{{ path('admin_dashboard')}}">
+                ADMIN
+                </a>
+        {% endif %}
 </ul>
